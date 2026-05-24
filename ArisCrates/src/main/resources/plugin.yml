@@ -1,0 +1,24 @@
+name: ArisCrates
+version: ${project.version}
+main: me.ariscrates.ArisCratesPlugin
+api-version: '1.21'
+description: Система крейтов/кейсов с анимацией и наградами
+author: Aris
+
+commands:
+  crate:
+    description: Управление крейтами
+    usage: /crate <open|give|list|place|reload>
+    aliases: [crates]
+  key:
+    description: Выдать ключ игроку
+    usage: /key <ник> <крейт> [количество]
+    permission: ariscrates.admin
+
+permissions:
+  ariscrates.admin:
+    description: Полный доступ к управлению крейтами
+    default: op
+  ariscrates.open:
+    description: Открывать крейты
+    default: true

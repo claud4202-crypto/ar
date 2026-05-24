@@ -1,0 +1,46 @@
+name: ArisChat
+version: ${project.version}
+main: me.arischat.ArisChatPlugin
+api-version: '1.21'
+description: Расширенный чат — локальный/глобальный, ЛС, цвета, упоминания
+author: Aris
+
+commands:
+  msg:
+    description: Личное сообщение
+    usage: /msg <ник> <сообщение>
+    aliases: [pm, tell, w]
+  reply:
+    description: Ответить на ЛС
+    usage: /reply <сообщение>
+    aliases: [r]
+  ignore:
+    description: Игнорировать игрока
+    usage: /ignore <ник>
+  chatmode:
+    description: Переключить режим чата (local/global)
+    usage: /chatmode [local|global]
+    aliases: [cm]
+  broadcast:
+    description: Объявление на весь сервер
+    usage: /broadcast <сообщение>
+    aliases: [bc]
+    permission: arischat.broadcast
+  spy:
+    description: Следить за ЛС
+    usage: /spy
+    permission: arischat.spy
+
+permissions:
+  arischat.broadcast:
+    description: Делать объявления
+    default: op
+  arischat.spy:
+    description: Видеть чужие ЛС
+    default: op
+  arischat.color:
+    description: Использовать цвета в чате (&a, &b и т.д.)
+    default: op
+  arischat.mention:
+    description: Упоминать @ник в чате
+    default: true

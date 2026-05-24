@@ -1,0 +1,39 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              ArisChat — конфигурация                         ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# Формат чата
+# Переменные: {player}, {message}, {prefix}, {suffix}, {world}
+global-format: "&7[&fG&7] {prefix}{player}{suffix}&7: &f{message}"
+local-format: "&7[&aL&7] {prefix}{player}{suffix}&7: &f{message}"
+
+# Радиус локального чата (блоки)
+local-radius: 100
+
+# Режим чата по умолчанию: local или global
+default-mode: global
+
+# Формат ЛС
+msg-format-sender: "&7[&dЯ → &f{target}&7] &f{message}"
+msg-format-receiver: "&7[&d{sender} → Я&7] &f{message}"
+
+# Формат шпиона
+spy-format: "&8[SPY] {sender} → {target}: {message}"
+
+# Формат объявления
+broadcast-format: "&c&l[!] &e{message}"
+
+# Звук при упоминании (@ник)
+mention-sound: ENTITY_EXPERIENCE_ORB_PICKUP
+
+# Антиспам: минимальная задержка между сообщениями (мс)
+antispam-delay-ms: 1000
+
+# Антикапс: макс % заглавных букв (0 = выкл)
+anticaps-percent: 70
+anticaps-min-length: 5
+
+# Матерные слова (будут заменены на ***)
+banned-words:
+  - "badword1"
+  - "badword2"

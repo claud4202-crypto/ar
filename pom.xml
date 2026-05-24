@@ -15,6 +15,10 @@
     <modules>
         <module>ArisDonate</module>
         <module>RegionBlocks</module>
+        <module>ArisCrates</module>
+        <module>ArisAuction</module>
+        <module>ArisChat</module>
+        <module>ArisPets</module>
     </modules>
 
     <properties>

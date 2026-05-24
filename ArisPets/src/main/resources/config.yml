@@ -1,0 +1,65 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              ArisPets — конфигурация                         ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# Дистанция следования (блоки)
+follow-distance: 3.0
+
+# Скорость питомца
+follow-speed: 0.3
+
+# Телепорт если далеко (блоки)
+teleport-distance: 20.0
+
+# Доступные питомцы
+pets:
+  wolf:
+    display-name: "&fВолк"
+    entity-type: WOLF
+    permission: ""
+    baby: true
+  cat:
+    display-name: "&6Кот"
+    entity-type: CAT
+    permission: ""
+    baby: true
+  fox:
+    display-name: "&cЛисичка"
+    entity-type: FOX
+    permission: ""
+    baby: true
+  parrot:
+    display-name: "&bПопугай"
+    entity-type: PARROT
+    permission: ""
+    baby: false
+  axolotl:
+    display-name: "&dАксолотль"
+    entity-type: AXOLOTL
+    permission: ""
+    baby: true
+  rabbit:
+    display-name: "&fКролик"
+    entity-type: RABBIT
+    permission: ""
+    baby: true
+  bee:
+    display-name: "&eПчёлка"
+    entity-type: BEE
+    permission: "arispets.pet.bee"
+    baby: true
+  allay:
+    display-name: "&bАллей"
+    entity-type: ALLAY
+    permission: "arispets.pet.allay"
+    baby: false
+  iron_golem:
+    display-name: "&7Железный голем"
+    entity-type: IRON_GOLEM
+    permission: "arispets.pet.golem"
+    baby: false
+  blaze:
+    display-name: "&6Ифрит"
+    entity-type: BLAZE
+    permission: "arispets.pet.blaze"
+    baby: false

@@ -1,0 +1,125 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              ArisCrates — конфигурация                       ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# Анимация открытия (тики, 20 = 1 секунда)
+animation-duration: 60
+
+# Крейты
+crates:
+  common:
+    display-name: "<grad:#55FF55:#AAFF00>Обычный крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&aКлюч от обычного крейта"
+    block-material: CHEST
+    animation: ROULETTE
+    broadcast-win: false
+    rewards:
+      - material: IRON_INGOT
+        amount: 16
+        chance: 30
+        display: "&7Железо ×16"
+      - material: GOLD_INGOT
+        amount: 8
+        chance: 25
+        display: "&6Золото ×8"
+      - material: DIAMOND
+        amount: 4
+        chance: 20
+        display: "&bАлмазы ×4"
+      - material: EMERALD
+        amount: 8
+        chance: 15
+        display: "&aИзумруды ×8"
+      - material: GOLDEN_APPLE
+        amount: 4
+        chance: 10
+        display: "&6Золотые яблоки ×4"
+
+  rare:
+    display-name: "<grad:#00FFFF:#0088FF>Редкий крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&bКлюч от редкого крейта"
+    block-material: ENDER_CHEST
+    animation: ROULETTE
+    broadcast-win: true
+    rewards:
+      - material: DIAMOND
+        amount: 16
+        chance: 25
+        display: "&bАлмазы ×16"
+      - material: NETHERITE_INGOT
+        amount: 2
+        chance: 15
+        display: "&8Незерит ×2"
+      - material: ENCHANTED_GOLDEN_APPLE
+        amount: 2
+        chance: 15
+        display: "&6Зачарованные яблоки ×2"
+      - material: ELYTRA
+        amount: 1
+        chance: 5
+        display: "&dЭлитры"
+      - material: TOTEM_OF_UNDYING
+        amount: 1
+        chance: 10
+        display: "&6Тотем бессмертия"
+      - material: DIAMOND_BLOCK
+        amount: 4
+        chance: 15
+        display: "&bАлмазные блоки ×4"
+      - material: EMERALD_BLOCK
+        amount: 8
+        chance: 15
+        display: "&aИзумрудные блоки ×8"
+
+  legendary:
+    display-name: "<grad:#FFD700:#FF4500>Легендарный крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&6Ключ от легендарного крейта"
+    block-material: ENDER_CHEST
+    animation: ROULETTE
+    broadcast-win: true
+    rewards:
+      - material: NETHERITE_INGOT
+        amount: 8
+        chance: 20
+        display: "&8Незерит ×8"
+      - material: NETHERITE_SWORD
+        amount: 1
+        enchantments: ["sharpness:5", "fire_aspect:2", "looting:3"]
+        chance: 10
+        display: "&cНезеритовый меч (Sharp V)"
+      - material: NETHERITE_CHESTPLATE
+        amount: 1
+        enchantments: ["protection:4", "unbreaking:3"]
+        chance: 10
+        display: "&cНезеритовый нагрудник (Prot IV)"
+      - material: ELYTRA
+        amount: 1
+        chance: 10
+        display: "&dЭлитры"
+      - material: ENCHANTED_GOLDEN_APPLE
+        amount: 8
+        chance: 15
+        display: "&6Зачарованные яблоки ×8"
+      - material: TOTEM_OF_UNDYING
+        amount: 4
+        chance: 15
+        display: "&6Тотемы ×4"
+      - material: NETHERITE_BLOCK
+        amount: 2
+        chance: 5
+        display: "&8Незеритовые блоки ×2"
+      - material: BEACON
+        amount: 1
+        chance: 5
+        display: "&eМаяк"
+      - material: DRAGON_EGG
+        amount: 1
+        chance: 3
+        display: "&5Яйцо Дракона"
+      - material: DIAMOND_BLOCK
+        amount: 16
+        chance: 7
+        display: "&bАлмазные блоки ×16"
