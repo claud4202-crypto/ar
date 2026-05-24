@@ -39,11 +39,15 @@ public class CratePreviewGui {
             if (slot >= size - 1) break;
             ItemStack display = r.item().clone();
             ItemMeta im = display.getItemMeta();
-            im.displayName(Msg.parse(r.display()));
+            String rarityColor = CrateOpenGui.getRarityColor(r.rarity());
+            String rarityName = CrateOpenGui.getRarityName(r.rarity());
+            im.displayName(Msg.parse(rarityColor + r.display()));
             double pct = (r.chance() / totalChance) * 100;
             List<Component> lore = new ArrayList<>();
             lore.add(Msg.parse("&7Шанс: &e" + String.format("%.1f", pct) + "%"));
             lore.add(Msg.parse("&7Количество: &f" + r.item().getAmount()));
+            lore.add(Msg.parse("&7Редкость: " + rarityColor + rarityName));
+            lore.add(Msg.parse(rarityColor + CrateOpenGui.getRaritySymbols(r.rarity())));
             im.lore(lore);
             display.setItemMeta(im);
             inv.setItem(slot++, display);

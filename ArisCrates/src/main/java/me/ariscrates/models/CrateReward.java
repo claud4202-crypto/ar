@@ -5,5 +5,6 @@ import org.bukkit.inventory.ItemStack;
 public record CrateReward(
         String display,
         ItemStack item,
-        double chance
+        double chance,
+        String rarity
 ) {}

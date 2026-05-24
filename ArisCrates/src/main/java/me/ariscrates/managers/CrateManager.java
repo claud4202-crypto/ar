@@ -62,6 +62,26 @@ public class CrateManager {
                 .get(keyCrateId, PersistentDataType.STRING);
     }
 
+    public int countKeys(org.bukkit.entity.Player player, String crateId) {
+        int count = 0;
+        for (ItemStack item : player.getInventory().getContents()) {
+            String id = getKeyId(item);
+            if (id != null && id.equalsIgnoreCase(crateId)) count += item.getAmount();
+        }
+        return count;
+    }
+
+    public boolean consumeKey(org.bukkit.entity.Player player, String crateId) {
+        for (ItemStack item : player.getInventory().getContents()) {
+            String id = getKeyId(item);
+            if (id != null && id.equalsIgnoreCase(crateId)) {
+                item.setAmount(item.getAmount() - 1);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void load() {
         ConfigurationSection root = plugin.getConfig().getConfigurationSection("crates");
         if (root == null) return;
@@ -82,7 +102,8 @@ public class CrateManager {
                 if (item == null) continue;
                 double chance = raw.get("chance") == null ? 10 : ((Number) raw.get("chance")).doubleValue();
                 String desc = raw.get("display") == null ? item.getType().name() : raw.get("display").toString();
-                rewards.add(new CrateReward(desc, item, chance));
+                String rarity = raw.get("rarity") == null ? "common" : raw.get("rarity").toString();
+                rewards.add(new CrateReward(desc, item, chance, rarity));
             }
             if (rewards.isEmpty()) continue;
             crates.put(id.toLowerCase(Locale.ROOT),

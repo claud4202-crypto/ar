@@ -3,11 +3,14 @@ package me.ariscrates;
 import me.ariscrates.commands.CrateCommand;
 import me.ariscrates.commands.KeyCommand;
 import me.ariscrates.gui.CrateAnimationGui;
+import me.ariscrates.gui.CrateOpenGui;
 import me.ariscrates.gui.CratePreviewGui;
 import me.ariscrates.managers.CrateLocationManager;
 import me.ariscrates.managers.CrateManager;
 import me.ariscrates.managers.Msg;
 import me.ariscrates.models.Crate;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -19,12 +22,18 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class ArisCratesPlugin extends JavaPlugin implements Listener {
 
     private CrateManager crateManager;
     private CrateLocationManager locationManager;
     private CrateAnimationGui animationGui;
     private CratePreviewGui previewGui;
+    private CrateOpenGui openGui;
+    private final Map<UUID, String> openCrateGui = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -33,6 +42,7 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         locationManager = new CrateLocationManager(this);
         animationGui = new CrateAnimationGui(this);
         previewGui = new CratePreviewGui(this);
+        openGui = new CrateOpenGui(this);
 
         PluginCommand crateCmd = getCommand("crate");
         CrateCommand cc = new CrateCommand(this);
@@ -57,35 +67,62 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         e.setCancelled(true);
         Player p = e.getPlayer();
         Crate crate = crateManager.getCrate(crateId);
-        if (crate == null) { p.sendMessage(Msg.parse("&cКрейт &e" + crateId + " &cне найден в конфиге.")); return; }
+        if (crate == null) { p.sendMessage(Msg.parse("&cКрейт &e" + crateId + " &cне найден.")); return; }
 
-        ItemStack hand = p.getInventory().getItemInMainHand();
-        String keyId = crateManager.getKeyId(hand);
-
-        if (keyId == null || !keyId.equalsIgnoreCase(crate.id())) {
-            // No key — show preview
-            if (p.isSneaking()) {
-                previewGui.open(p, crate);
-            } else {
-                p.sendMessage(Msg.parse("&cНужен ключ от " + crate.displayName() + "&c! (Shift+ПКМ — предпросмотр)"));
-            }
-            return;
-        }
-
-        // Has correct key — open crate
-        hand.setAmount(hand.getAmount() - 1);
-        animationGui.play(p, crate);
+        // Always open the crate GUI menu
+        openCrateGui.put(p.getUniqueId(), crate.id());
+        openGui.open(p, crate);
+        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.7f, 1.0f);
     }
 
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
-        String title = "";
-        if (e.getView().title() != null) {
-            title = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText()
-                    .serialize(e.getView().title());
-        }
-        if (title.contains(CrateAnimationGui.TITLE_PREFIX) || title.contains(CratePreviewGui.TITLE_PREFIX)) {
+        if (!(e.getWhoClicked() instanceof Player p)) return;
+        String title = PlainTextComponentSerializer.plainText().serialize(e.getView().title());
+
+        // Animation GUI — block all clicks
+        if (title.contains(CrateAnimationGui.TITLE_PREFIX)) {
             e.setCancelled(true);
+            return;
+        }
+
+        // Preview GUI — block all clicks
+        if (title.contains(CratePreviewGui.TITLE_PREFIX)) {
+            e.setCancelled(true);
+            return;
+        }
+
+        // Crate Open GUI — handle buttons
+        if (title.contains(CrateOpenGui.TITLE_PREFIX)) {
+            e.setCancelled(true);
+            int slot = e.getRawSlot();
+            String crateId = openCrateGui.get(p.getUniqueId());
+            if (crateId == null) return;
+            Crate crate = crateManager.getCrate(crateId);
+            if (crate == null) return;
+
+            if (slot == 49) {
+                // Open crate button
+                int keys = crateManager.countKeys(p, crate.id());
+                if (keys <= 0) {
+                    p.sendMessage(Msg.parse("&cУ вас нет ключей от этого крейта!"));
+                    p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.7f, 1.0f);
+                    return;
+                }
+                crateManager.consumeKey(p, crate.id());
+                p.closeInventory();
+                openCrateGui.remove(p.getUniqueId());
+                animationGui.play(p, crate);
+            } else if (slot == 46) {
+                // Preview rewards
+                p.closeInventory();
+                openCrateGui.remove(p.getUniqueId());
+                previewGui.open(p, crate);
+            } else if (slot == 50) {
+                // Close
+                p.closeInventory();
+                openCrateGui.remove(p.getUniqueId());
+            }
         }
     }
 
@@ -93,4 +130,5 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
     public CrateLocationManager getLocationManager() { return locationManager; }
     public CrateAnimationGui getAnimationGui() { return animationGui; }
     public CratePreviewGui getPreviewGui() { return previewGui; }
+    public CrateOpenGui getOpenGui() { return openGui; }
 }
