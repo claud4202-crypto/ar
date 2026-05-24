@@ -1,0 +1,23 @@
+name: ArisAuction
+version: ${project.version}
+main: me.arisauction.ArisAuctionPlugin
+api-version: '1.21'
+description: Аукцион между игроками
+author: Aris
+
+commands:
+  ah:
+    description: Аукцион
+    usage: /ah [sell <цена>|search <запрос>|expired|selling]
+    aliases: [auction]
+
+permissions:
+  arisauction.admin:
+    description: Админ аукциона (очистка, удаление лотов)
+    default: op
+  arisauction.sell:
+    description: Выставлять на аукцион
+    default: true
+  arisauction.buy:
+    description: Покупать с аукциона
+    default: true

@@ -1,0 +1,24 @@
+name: ArisPets
+version: ${project.version}
+main: me.arispets.ArisPetsPlugin
+api-version: '1.21'
+description: Питомцы для игроков — моб ходит за игроком
+author: Aris
+
+commands:
+  pet:
+    description: Управление питомцем
+    usage: /pet <list|spawn|remove|rename|select>
+    aliases: [pets]
+  petadmin:
+    description: Админ-команда питомцев
+    usage: /petadmin <give|remove|reload> <ник> <питомец>
+    permission: arispets.admin
+
+permissions:
+  arispets.admin:
+    description: Полный доступ к питомцам
+    default: op
+  arispets.use:
+    description: Использовать своих питомцев
+    default: true

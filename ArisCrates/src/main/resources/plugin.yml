@@ -1,0 +1,28 @@
+name: ArisCrates
+version: ${project.version}
+main: me.ariscrates.ArisCratesPlugin
+api-version: '1.21'
+description: Система крейтов/кейсов с анимацией, донат-наградами и голограммами
+author: Aris
+softdepend: [ArisDonate]
+
+commands:
+  crate:
+    description: Управление крейтами
+    usage: /crate <list|preview|place|remove|reload>
+    aliases: [crates]
+  key:
+    description: Выдать ключ игроку
+    usage: /key <ник> <крейт> [количество]
+    permission: ariscrates.admin
+  free:
+    description: Получить бесплатный ключ от донат-крейта (раз в 24 часа)
+    usage: /free
+
+permissions:
+  ariscrates.admin:
+    description: Полный доступ к управлению крейтами
+    default: op
+  ariscrates.open:
+    description: Открывать крейты
+    default: true

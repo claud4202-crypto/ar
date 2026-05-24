@@ -1,0 +1,230 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              ArisCrates — конфигурация                       ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# Редкости: common, uncommon, rare, epic, legendary, mythic, donate
+
+# ID бесплатного донат-крейта (для команды /free)
+free-crate: donate_free
+
+# ═══════════════════ ОБЫЧНЫЕ КРЕЙТЫ ═══════════════════
+
+crates:
+  common:
+    display-name: "<grad:#55FF55:#AAFF00>Обычный крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&aКлюч от обычного крейта"
+    block-material: CHEST
+    hologram: "&a&lОБЫЧНЫЙ КРЕЙТ"
+    broadcast-win: false
+    rewards:
+      - material: IRON_INGOT
+        amount: 16
+        chance: 30
+        rarity: common
+        display: "&7Железо ×16"
+      - material: GOLD_INGOT
+        amount: 8
+        chance: 25
+        rarity: common
+        display: "&6Золото ×8"
+      - material: DIAMOND
+        amount: 4
+        chance: 20
+        rarity: uncommon
+        display: "&bАлмазы ×4"
+      - material: EMERALD
+        amount: 8
+        chance: 15
+        rarity: uncommon
+        display: "&aИзумруды ×8"
+      - material: GOLDEN_APPLE
+        amount: 4
+        chance: 10
+        rarity: rare
+        display: "&6Золотые яблоки ×4"
+
+  rare:
+    display-name: "<grad:#00FFFF:#0088FF>Редкий крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&bКлюч от редкого крейта"
+    block-material: ENDER_CHEST
+    hologram: "&b&lРЕДКИЙ КРЕЙТ"
+    broadcast-win: true
+    rewards:
+      - material: DIAMOND
+        amount: 16
+        chance: 25
+        rarity: uncommon
+        display: "&bАлмазы ×16"
+      - material: NETHERITE_INGOT
+        amount: 2
+        chance: 15
+        rarity: rare
+        display: "&8Незерит ×2"
+      - material: ENCHANTED_GOLDEN_APPLE
+        amount: 2
+        chance: 15
+        rarity: epic
+        display: "&6Зачарованные яблоки ×2"
+      - material: ELYTRA
+        amount: 1
+        chance: 5
+        rarity: legendary
+        display: "&dЭлитры"
+      - material: TOTEM_OF_UNDYING
+        amount: 1
+        chance: 10
+        rarity: epic
+        display: "&6Тотем бессмертия"
+      - material: DIAMOND_BLOCK
+        amount: 4
+        chance: 15
+        rarity: rare
+        display: "&bАлмазные блоки ×4"
+      - material: EMERALD_BLOCK
+        amount: 8
+        chance: 15
+        rarity: rare
+        display: "&aИзумрудные блоки ×8"
+
+  legendary:
+    display-name: "<grad:#FFD700:#FF4500>Легендарный крейт</grad>"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&6Ключ от легендарного крейта"
+    block-material: ENDER_CHEST
+    hologram: "&6&lЛЕГЕНДАРНЫЙ КРЕЙТ"
+    broadcast-win: true
+    rewards:
+      - material: NETHERITE_INGOT
+        amount: 8
+        chance: 20
+        rarity: rare
+        display: "&8Незерит ×8"
+      - material: NETHERITE_SWORD
+        amount: 1
+        enchantments: ["sharpness:5", "fire_aspect:2", "looting:3"]
+        chance: 10
+        rarity: legendary
+        display: "&cНезеритовый меч (Sharp V)"
+      - material: NETHERITE_CHESTPLATE
+        amount: 1
+        enchantments: ["protection:4", "unbreaking:3"]
+        chance: 10
+        rarity: legendary
+        display: "&cНезеритовый нагрудник (Prot IV)"
+      - material: ELYTRA
+        amount: 1
+        chance: 10
+        rarity: legendary
+        display: "&dЭлитры"
+      - material: ENCHANTED_GOLDEN_APPLE
+        amount: 8
+        chance: 15
+        rarity: epic
+        display: "&6Зачарованные яблоки ×8"
+      - material: TOTEM_OF_UNDYING
+        amount: 4
+        chance: 15
+        rarity: epic
+        display: "&6Тотемы ×4"
+      - material: NETHERITE_BLOCK
+        amount: 2
+        chance: 5
+        rarity: mythic
+        display: "&8Незеритовые блоки ×2"
+      - material: BEACON
+        amount: 1
+        chance: 5
+        rarity: mythic
+        display: "&eМаяк"
+      - material: DRAGON_EGG
+        amount: 1
+        chance: 3
+        rarity: donate
+        display: "&5Яйцо Дракона"
+      - material: DIAMOND_BLOCK
+        amount: 16
+        chance: 7
+        rarity: legendary
+        display: "&bАлмазные блоки ×16"
+
+  # ═══════════════════ ДОНАТ КРЕЙТЫ ═══════════════════
+
+  donate_free:
+    display-name: "&a&lБесплатный Донат Кейс"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&a&lКлюч от бесплатного донат кейса"
+    block-material: CHEST
+    hologram: "&a&l✦ БЕСПЛАТНЫЙ ДОНАТ КЕЙС ✦"
+    broadcast-win: true
+    rewards:
+      - material: NETHER_STAR
+        chance: 35
+        rarity: common
+        display: "<grad:#55FF55:#AAFF00>❖ Spark</grad>"
+        donate-rank: spark
+      - material: NETHER_STAR
+        chance: 25
+        rarity: uncommon
+        display: "<grad:#D8D8FF:#8080FF>❖ Luna</grad>"
+        donate-rank: luna
+      - material: NETHER_STAR
+        chance: 20
+        rarity: rare
+        display: "<grad:#00FFFF:#00AAFF>❖ Stellar</grad>"
+        donate-rank: stellar
+      - material: NETHER_STAR
+        chance: 12
+        rarity: epic
+        display: "<grad:#FF55FF:#AA00AA>❖ Nova</grad>"
+        donate-rank: nova
+      - material: NETHER_STAR
+        chance: 8
+        rarity: legendary
+        display: "<grad:#FFFFFF:#ADD8E6>❖ Comet</grad>"
+        donate-rank: comet
+
+  donate_paid:
+    display-name: "&6&lПлатный Донат Кейс"
+    key-material: TRIPWIRE_HOOK
+    key-name: "&6&lКлюч от платного донат кейса"
+    block-material: ENDER_CHEST
+    hologram: "&6&l✦ ПЛАТНЫЙ ДОНАТ КЕЙС ✦"
+    broadcast-win: true
+    rewards:
+      - material: NETHER_STAR
+        chance: 25
+        rarity: rare
+        display: "<grad:#FFFFFF:#ADD8E6>❖ Comet</grad>"
+        donate-rank: comet
+      - material: NETHER_STAR
+        chance: 22
+        rarity: epic
+        display: "<grad:#A020F0:#5F00FF>❖ Galaxy</grad>"
+        donate-rank: galaxy
+      - material: NETHER_STAR
+        chance: 18
+        rarity: epic
+        display: "<grad:#FF69B4:#FF1493>❖ Nebula</grad>"
+        donate-rank: nebula
+      - material: NETHER_STAR
+        chance: 15
+        rarity: legendary
+        display: "<grad:#1E90FF:#0000CD>❖ Cosmos</grad>"
+        donate-rank: cosmos
+      - material: NETHER_STAR
+        chance: 10
+        rarity: legendary
+        display: "<grad:#FF4500:#FF0000>❖ Phoenix</grad>"
+        donate-rank: phoenix
+      - material: NETHER_STAR
+        chance: 7
+        rarity: mythic
+        display: "<grad:#FFD700:#FF8C00>★ Aris</grad>"
+        donate-rank: aris
+      - material: NETHER_STAR
+        chance: 3
+        rarity: donate
+        display: "<grad:#FF8C00:#FF1493>✦ ArisPlus</grad>"
+        donate-rank: arisplus
