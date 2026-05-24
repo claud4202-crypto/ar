@@ -8,8 +8,8 @@ import org.bukkit.plugin.Plugin;
 import java.lang.reflect.Method;
 
 /**
- * Интеграция с ArisDonate через рефлексию (softdepend).
- * Позволяет выдавать донат-ранги и проверять текущий ранг.
+ * Интеграция с ArisDonate — выдаёт донат-ранги через прямой вызов DonateManager.
+ * Использует рефлексию + консольную команду как fallback.
  */
 public class DonateIntegration {
 
@@ -50,7 +50,7 @@ public class DonateIntegration {
             Method weight = rank.getClass().getMethod("weight");
             return (int) weight.invoke(rank);
         } catch (Exception e) {
-            plugin.getLogger().warning("Ошибка getPlayerDonateWeight: " + e.getMessage());
+            plugin.getLogger().warning("[DI] getPlayerDonateWeight ошибка: " + e);
             return 0;
         }
     }
@@ -61,11 +61,14 @@ public class DonateIntegration {
             Object dm = getDonateManager();
             Method getRank = dm.getClass().getMethod("getRank", String.class);
             Object rank = getRank.invoke(dm, rankId);
-            if (rank == null) return 0;
+            if (rank == null) {
+                plugin.getLogger().warning("[DI] Ранг '" + rankId + "' не найден в ArisDonate!");
+                return 0;
+            }
             Method weight = rank.getClass().getMethod("weight");
             return (int) weight.invoke(rank);
         } catch (Exception e) {
-            plugin.getLogger().warning("Ошибка getRankWeight: " + e.getMessage());
+            plugin.getLogger().warning("[DI] getRankWeight ошибка: " + e);
             return 0;
         }
     }
@@ -90,23 +93,47 @@ public class DonateIntegration {
      */
     public boolean giveRankIfHigher(Player player, String rankId) {
         if (!available) {
-            plugin.getLogger().warning("DonateIntegration не доступна для выдачи " + rankId);
+            plugin.getLogger().warning("[DI] Не доступна для выдачи " + rankId);
             return false;
         }
+
+        int currentWeight = getPlayerDonateWeight(player.getName());
+        int newWeight = getRankWeight(rankId);
+
+        plugin.getLogger().info("[Крейт] " + player.getName()
+                + ": текущий=" + currentWeight + " новый=" + newWeight + " ранг=" + rankId);
+
+        if (newWeight <= currentWeight) {
+            plugin.getLogger().info("[Крейт] Ранг " + rankId + " ниже/равен — пропуск.");
+            return false;
+        }
+
+        // Способ 1: прямой вызов через рефлексию
+        boolean success = false;
         try {
-            int currentWeight = getPlayerDonateWeight(player.getName());
-            int newWeight = getRankWeight(rankId);
-
-            plugin.getLogger().info("[Крейт] Игрок " + player.getName()
-                    + " текущий вес=" + currentWeight + " новый=" + newWeight + " ранг=" + rankId);
-
-            if (newWeight <= currentWeight) return false;
-
             Object dm = getDonateManager();
             Method setPlayerRank = dm.getClass().getMethod("setPlayerRank", String.class, String.class);
             setPlayerRank.invoke(dm, player.getName(), rankId);
+            success = true;
+            plugin.getLogger().info("[Крейт] Ранг " + rankId + " выдан через API: " + player.getName());
+        } catch (Exception e) {
+            plugin.getLogger().warning("[Крейт] API-вызов не удался: " + e.getMessage());
+        }
 
-            // Re-apply permissions
+        // Способ 2 (fallback): выполнить команду от консоли
+        if (!success) {
+            try {
+                String cmd = "arisdonate set " + player.getName() + " " + rankId;
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                success = true;
+                plugin.getLogger().info("[Крейт] Ранг " + rankId + " выдан через команду: " + cmd);
+            } catch (Exception e2) {
+                plugin.getLogger().warning("[Крейт] Команда fallback не удалась: " + e2.getMessage());
+            }
+        }
+
+        // Обновить пермишены
+        if (success) {
             try {
                 Method permService = arisDonatePlugin.getClass().getMethod("getPermissionService");
                 Object ps = permService.invoke(arisDonatePlugin);
@@ -114,12 +141,14 @@ public class DonateIntegration {
                 reapply.invoke(ps, player);
             } catch (Exception ignored) {}
 
-            plugin.getLogger().info("[Крейт] Донат " + rankId + " выдан игроку " + player.getName());
-            return true;
-        } catch (Exception e) {
-            plugin.getLogger().warning("Ошибка выдачи доната " + rankId + " игроку " + player.getName() + ": " + e);
-            e.printStackTrace();
-            return false;
+            try {
+                Method getCF = arisDonatePlugin.getClass().getMethod("getChatFormatter");
+                Object cf = getCF.invoke(arisDonatePlugin);
+                Method applyTab = cf.getClass().getMethod("applyTabPrefix", Player.class);
+                applyTab.invoke(cf, player);
+            } catch (Exception ignored) {}
         }
+
+        return success;
     }
 }

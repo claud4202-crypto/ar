@@ -13,6 +13,7 @@ import me.ariscrates.managers.HologramManager;
 import me.ariscrates.managers.Msg;
 import me.ariscrates.models.Crate;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.command.PluginCommand;
@@ -129,9 +130,10 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
                 }
                 crateManager.consumeKey(p, crate.id());
                 Location loc = openCrateLoc.remove(p.getUniqueId());
-                p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
-                animationGui.play(p, crate, loc);
+                p.closeInventory();
+                // Небольшая задержка чтобы GUI закрылся перед мировой анимацией
+                Bukkit.getScheduler().runTaskLater(ArisCratesPlugin.this, () -> animationGui.play(p, crate, loc), 5L);
             } else if (slot == 46) {
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
