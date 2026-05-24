@@ -269,15 +269,35 @@ public class CrateAnimationGui {
     }
 
     private void giveReward(Player player, Crate crate, CrateReward reward) {
-        ItemStack item = reward.item().clone();
-        var leftover = player.getInventory().addItem(item);
-        for (ItemStack drop : leftover.values()) {
-            player.getWorld().dropItemNaturally(player.getLocation(), drop);
-        }
         String rarityColor = CrateOpenGui.getRarityColor(reward.rarity());
         String rarityName = CrateOpenGui.getRarityName(reward.rarity());
-        player.sendMessage(Msg.parse("&a&l✓ &aВы выиграли: " + rarityColor + reward.display()
-                + " &7(" + rarityColor + rarityName + "&7) &aиз " + crate.displayName()));
+
+        if (reward.isDonateReward()) {
+            // Donate reward — give rank via ArisDonate
+            var di = plugin.getDonateIntegration();
+            if (di != null && di.isAvailable()) {
+                String rankName = di.getRankGradientName(reward.donateRankId());
+                boolean given = di.giveRankIfHigher(player, reward.donateRankId());
+                if (given) {
+                    player.sendMessage(Msg.parse("&a&l✓ &aВы выиграли донат: " + rankName
+                            + " &7(" + rarityColor + rarityName + "&7) &aиз " + crate.displayName()));
+                } else {
+                    player.sendMessage(Msg.parse("&e&l! &eВы выиграли " + rankName
+                            + "&e, но у вас уже есть донат выше! Ранг не изменён."));
+                }
+            } else {
+                player.sendMessage(Msg.parse("&cОшибка: ArisDonate не доступен. Обратитесь к администрации."));
+            }
+        } else {
+            // Item reward
+            ItemStack item = reward.item().clone();
+            var leftover = player.getInventory().addItem(item);
+            for (ItemStack drop : leftover.values()) {
+                player.getWorld().dropItemNaturally(player.getLocation(), drop);
+            }
+            player.sendMessage(Msg.parse("&a&l✓ &aВы выиграли: " + rarityColor + reward.display()
+                    + " &7(" + rarityColor + rarityName + "&7) &aиз " + crate.displayName()));
+        }
 
         if (crate.broadcastWin()) {
             Component bc = Msg.parse("&6&l[Крейт] &e" + player.getName() + " &7выиграл "

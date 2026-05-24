@@ -1,12 +1,15 @@
 package me.ariscrates;
 
 import me.ariscrates.commands.CrateCommand;
+import me.ariscrates.commands.FreeCommand;
 import me.ariscrates.commands.KeyCommand;
 import me.ariscrates.gui.CrateAnimationGui;
 import me.ariscrates.gui.CrateOpenGui;
 import me.ariscrates.gui.CratePreviewGui;
 import me.ariscrates.managers.CrateLocationManager;
 import me.ariscrates.managers.CrateManager;
+import me.ariscrates.managers.DonateIntegration;
+import me.ariscrates.managers.HologramManager;
 import me.ariscrates.managers.Msg;
 import me.ariscrates.models.Crate;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -19,7 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -33,6 +35,8 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
     private CrateAnimationGui animationGui;
     private CratePreviewGui previewGui;
     private CrateOpenGui openGui;
+    private HologramManager hologramManager;
+    private DonateIntegration donateIntegration;
     private final Map<UUID, String> openCrateGui = new HashMap<>();
 
     @Override
@@ -43,6 +47,7 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         animationGui = new CrateAnimationGui(this);
         previewGui = new CratePreviewGui(this);
         openGui = new CrateOpenGui(this);
+        hologramManager = new HologramManager(this);
 
         PluginCommand crateCmd = getCommand("crate");
         CrateCommand cc = new CrateCommand(this);
@@ -52,8 +57,23 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         KeyCommand kc = new KeyCommand(this);
         if (keyCmd != null) { keyCmd.setExecutor(kc); keyCmd.setTabCompleter(kc); }
 
+        PluginCommand freeCmd = getCommand("free");
+        if (freeCmd != null) freeCmd.setExecutor(new FreeCommand(this));
+
         getServer().getPluginManager().registerEvents(this, this);
+
+        // Spawn holograms after 1 tick (worlds loaded)
+        getServer().getScheduler().runTaskLater(this, () -> {
+            hologramManager.spawnAll();
+            donateIntegration = new DonateIntegration(this);
+        }, 20L);
+
         getLogger().info("ArisCrates v" + getDescription().getVersion() + " включён.");
+    }
+
+    @Override
+    public void onDisable() {
+        if (hologramManager != null) hologramManager.removeAll();
     }
 
     @EventHandler
@@ -69,7 +89,6 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         Crate crate = crateManager.getCrate(crateId);
         if (crate == null) { p.sendMessage(Msg.parse("&cКрейт &e" + crateId + " &cне найден.")); return; }
 
-        // Always open the crate GUI menu
         openCrateGui.put(p.getUniqueId(), crate.id());
         openGui.open(p, crate);
         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.7f, 1.0f);
@@ -80,19 +99,16 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         if (!(e.getWhoClicked() instanceof Player p)) return;
         String title = PlainTextComponentSerializer.plainText().serialize(e.getView().title());
 
-        // Animation GUI — block all clicks
         if (title.contains(CrateAnimationGui.TITLE_PREFIX)) {
             e.setCancelled(true);
             return;
         }
 
-        // Preview GUI — block all clicks
         if (title.contains(CratePreviewGui.TITLE_PREFIX)) {
             e.setCancelled(true);
             return;
         }
 
-        // Crate Open GUI — handle buttons
         if (title.contains(CrateOpenGui.TITLE_PREFIX)) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
@@ -102,7 +118,6 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
             if (crate == null) return;
 
             if (slot == 49) {
-                // Open crate button
                 int keys = crateManager.countKeys(p, crate.id());
                 if (keys <= 0) {
                     p.sendMessage(Msg.parse("&cУ вас нет ключей от этого крейта!"));
@@ -114,12 +129,10 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
                 openCrateGui.remove(p.getUniqueId());
                 animationGui.play(p, crate);
             } else if (slot == 46) {
-                // Preview rewards
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
                 previewGui.open(p, crate);
             } else if (slot == 50) {
-                // Close
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
             }
@@ -131,4 +144,6 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
     public CrateAnimationGui getAnimationGui() { return animationGui; }
     public CratePreviewGui getPreviewGui() { return previewGui; }
     public CrateOpenGui getOpenGui() { return openGui; }
+    public HologramManager getHologramManager() { return hologramManager; }
+    public DonateIntegration getDonateIntegration() { return donateIntegration; }
 }

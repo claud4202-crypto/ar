@@ -1,6 +1,7 @@
 package me.ariscrates.models;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,6 +13,8 @@ public record Crate(
         String keyName,
         Material blockMaterial,
         boolean broadcastWin,
+        String permission,
+        String hologramText,
         List<CrateReward> rewards
 ) {
     public CrateReward roll() {
@@ -23,5 +26,18 @@ public record Crate(
             if (roll < acc) return r;
         }
         return rewards.get(rewards.size() - 1);
+    }
+
+    public boolean requiresPermission() {
+        return permission != null && !permission.isEmpty();
+    }
+
+    public boolean canOpen(Player p) {
+        if (!requiresPermission()) return true;
+        return p.hasPermission(permission);
+    }
+
+    public boolean isDonateType() {
+        return rewards.stream().anyMatch(CrateReward::isDonateReward);
     }
 }

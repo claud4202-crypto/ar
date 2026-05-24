@@ -4,8 +4,6 @@ import me.ariscrates.ArisCratesPlugin;
 import me.ariscrates.models.Crate;
 import me.ariscrates.models.CrateReward;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -95,19 +93,35 @@ public class CrateManager {
             Material blockMat = Material.matchMaterial(s.getString("block-material", "CHEST"));
             if (blockMat == null) blockMat = Material.CHEST;
             boolean broadcast = s.getBoolean("broadcast-win", false);
+            String permission = s.getString("permission", "");
+            String hologramText = s.getString("hologram", "");
 
             List<CrateReward> rewards = new ArrayList<>();
             for (Map<?, ?> raw : s.getMapList("rewards")) {
-                ItemStack item = parseItem(raw);
-                if (item == null) continue;
                 double chance = raw.get("chance") == null ? 10 : ((Number) raw.get("chance")).doubleValue();
-                String desc = raw.get("display") == null ? item.getType().name() : raw.get("display").toString();
+                String desc = raw.get("display") == null ? "???" : raw.get("display").toString();
                 String rarity = raw.get("rarity") == null ? "common" : raw.get("rarity").toString();
-                rewards.add(new CrateReward(desc, item, chance, rarity));
+                String donateRank = raw.get("donate-rank") == null ? null : raw.get("donate-rank").toString();
+
+                if (donateRank != null && !donateRank.isEmpty()) {
+                    // Donate reward — use a placeholder item (nether star)
+                    Material iconMat = Material.NETHER_STAR;
+                    Object iconObj = raw.get("material");
+                    if (iconObj != null) {
+                        Material parsed = Material.matchMaterial(iconObj.toString());
+                        if (parsed != null) iconMat = parsed;
+                    }
+                    ItemStack icon = new ItemStack(iconMat);
+                    rewards.add(new CrateReward(desc, icon, chance, rarity, donateRank));
+                } else {
+                    ItemStack item = parseItem(raw);
+                    if (item == null) continue;
+                    rewards.add(new CrateReward(desc, item, chance, rarity, null));
+                }
             }
             if (rewards.isEmpty()) continue;
             crates.put(id.toLowerCase(Locale.ROOT),
-                    new Crate(id.toLowerCase(Locale.ROOT), display, keyMat, keyName, blockMat, broadcast, rewards));
+                    new Crate(id.toLowerCase(Locale.ROOT), display, keyMat, keyName, blockMat, broadcast, permission, hologramText, rewards));
         }
     }
 

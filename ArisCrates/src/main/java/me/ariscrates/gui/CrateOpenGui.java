@@ -61,7 +61,11 @@ public class CrateOpenGui {
             List<Component> lore = new ArrayList<>();
             double pct = (r.chance() / totalChance) * 100;
             lore.add(Msg.parse("&7Шанс: &e" + String.format("%.1f", pct) + "%"));
-            lore.add(Msg.parse("&7Кол-во: &f" + r.item().getAmount()));
+            if (r.isDonateReward()) {
+                lore.add(Msg.parse("&7Тип: &cДонат-ранг"));
+            } else {
+                lore.add(Msg.parse("&7Кол-во: &f" + r.item().getAmount()));
+            }
             lore.add(Msg.parse("&7Редкость: " + getRarityColor(r.rarity()) + getRarityName(r.rarity())));
             lore.add(Component.empty());
             lore.add(Msg.parse(getRarityColor(r.rarity()) + getRaritySymbols(r.rarity())));

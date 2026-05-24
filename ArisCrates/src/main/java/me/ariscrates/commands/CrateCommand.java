@@ -57,6 +57,8 @@ public class CrateCommand implements CommandExecutor, TabCompleter {
                 Block block = p.getTargetBlockExact(5);
                 if (block == null) { sender.sendMessage(Msg.parse("&cПосмотрите на блок.")); return true; }
                 plugin.getLocationManager().setCrate(block.getLocation(), c.id());
+                String locKey = plugin.getLocationManager().locKeyOf(block.getLocation());
+                plugin.getHologramManager().spawnForLocation(locKey, c.id());
                 sender.sendMessage(Msg.parse("&aКрейт " + c.displayName() + " &aустановлен на " + block.getX() + ", " + block.getY() + ", " + block.getZ()));
             }
             case "remove" -> {
@@ -64,14 +66,17 @@ public class CrateCommand implements CommandExecutor, TabCompleter {
                 if (!(sender instanceof Player p)) { sender.sendMessage(Msg.parse("&cТолько в игре.")); return true; }
                 Block block = p.getTargetBlockExact(5);
                 if (block == null) { sender.sendMessage(Msg.parse("&cПосмотрите на блок.")); return true; }
+                String locKey = plugin.getLocationManager().locKeyOf(block.getLocation());
                 plugin.getLocationManager().removeCrate(block.getLocation());
+                plugin.getHologramManager().removeForLocation(locKey);
                 sender.sendMessage(Msg.parse("&aКрейт удалён."));
             }
             case "reload" -> {
                 if (!sender.hasPermission("ariscrates.admin")) { sender.sendMessage(Msg.parse("&cНет доступа.")); return true; }
                 plugin.reloadConfig();
                 plugin.getCrateManager().reload();
-                sender.sendMessage(Msg.parse("&aКонфиг перечитан."));
+                plugin.getHologramManager().spawnAll();
+                sender.sendMessage(Msg.parse("&aКонфиг перечитан, голограммы обновлены."));
             }
             default -> sender.sendMessage(Msg.parse("&cНеизвестная подкоманда: &e" + sub));
         }

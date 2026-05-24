@@ -41,6 +41,10 @@ public class CrateLocationManager {
         save();
     }
 
+    public Map<String, String> allLocations() { return locations; }
+
+    public String locKeyOf(Location loc) { return locKey(loc); }
+
     private String locKey(Location loc) {
         return loc.getWorld().getName() + "," + loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ();
     }
