@@ -3,17 +3,29 @@ package me.arischat;
 import me.arischat.commands.*;
 import me.arischat.listeners.ChatListener;
 import me.arischat.managers.ChatManager;
+import me.arischat.managers.DonateHook;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ArisChatPlugin extends JavaPlugin {
 
     private ChatManager chatManager;
+    private DonateHook donateHook;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         chatManager = new ChatManager(this);
+
+        // Init ArisDonate hook after 1 tick (ensure ArisDonate loaded)
+        getServer().getScheduler().runTaskLater(this, () -> {
+            donateHook = new DonateHook();
+            if (donateHook.isAvailable()) {
+                getLogger().info("ArisDonate интеграция активна — префиксы донатов в чате.");
+            } else {
+                getLogger().info("ArisDonate не найден — префиксы не будут отображаться.");
+            }
+        }, 20L);
 
         reg("msg", new MsgCommand(this));
         reg("reply", new ReplyCommand(this));
@@ -34,4 +46,5 @@ public class ArisChatPlugin extends JavaPlugin {
     }
 
     public ChatManager getChatManager() { return chatManager; }
+    public DonateHook getDonateHook() { return donateHook; }
 }

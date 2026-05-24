@@ -4,6 +4,7 @@ main: me.arischat.ArisChatPlugin
 api-version: '1.21'
 description: Расширенный чат — локальный/глобальный, ЛС, цвета, упоминания
 author: Aris
+softdepend: [ArisDonate]
 
 commands:
   msg:

@@ -3,8 +3,10 @@ package me.arischat.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.arischat.ArisChatPlugin;
 import me.arischat.managers.ChatManager;
+import me.arischat.managers.DonateHook;
 import me.arischat.managers.Msg;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -37,48 +39,57 @@ public class ChatListener implements Listener {
         raw = cm.filterBannedWords(raw);
 
         // Color codes for permitted players
-        if (p.hasPermission("arischat.color")) {
-            // Keep color codes
-        } else {
+        if (!p.hasPermission("arischat.color")) {
             raw = raw.replaceAll("&[0-9a-fk-or]", "");
+        }
+
+        // Get prefix Component from ArisDonate (with RGB gradients)
+        Component prefixComp = Component.empty();
+        DonateHook hook = plugin.getDonateHook();
+        if (hook != null && hook.isAvailable()) {
+            prefixComp = hook.getPrefixComponent(p);
         }
 
         ChatManager.ChatMode mode = cm.getMode(p);
         int radius = plugin.getConfig().getInt("local-radius", 100);
 
-        String format;
+        // Build message as Component chain to preserve gradients
+        Component modeTag;
         if (mode == ChatManager.ChatMode.LOCAL) {
-            format = plugin.getConfig().getString("local-format", "&7[&aL&7] {player}&7: &f{message}");
+            modeTag = Msg.parse("&7[&aL&7] ");
         } else {
-            format = plugin.getConfig().getString("global-format", "&7[&fG&7] {player}&7: &f{message}");
+            modeTag = Msg.parse("&7[&fG&7] ");
         }
 
-        String finalMsg = format
-                .replace("{player}", p.getName())
-                .replace("{message}", raw)
-                .replace("{prefix}", "")
-                .replace("{suffix}", "")
-                .replace("{world}", p.getWorld().getName());
+        boolean hasPrefix = !PlainTextComponentSerializer.plainText().serialize(prefixComp).isEmpty();
 
-        Component component = Msg.parse(finalMsg);
+        Component component = modeTag;
+        if (hasPrefix) {
+            component = component.append(prefixComp).append(Component.text(" "));
+        }
+        component = component
+                .append(Component.text(p.getName(), NamedTextColor.WHITE))
+                .append(Msg.parse("&7: &f"))
+                .append(Msg.parse(raw));
+
+        Component finalComponent = component;
 
         if (mode == ChatManager.ChatMode.LOCAL) {
             for (Player o : Bukkit.getOnlinePlayers()) {
                 if (o.getWorld().equals(p.getWorld()) && o.getLocation().distance(p.getLocation()) <= radius) {
                     if (!cm.isIgnoring(o, p.getUniqueId())) {
-                        o.sendMessage(component);
+                        o.sendMessage(finalComponent);
                     }
                 }
             }
-            // Console too
-            Bukkit.getConsoleSender().sendMessage(component);
+            Bukkit.getConsoleSender().sendMessage(finalComponent);
         } else {
             for (Player o : Bukkit.getOnlinePlayers()) {
                 if (!cm.isIgnoring(o, p.getUniqueId())) {
-                    o.sendMessage(component);
+                    o.sendMessage(finalComponent);
                 }
             }
-            Bukkit.getConsoleSender().sendMessage(component);
+            Bukkit.getConsoleSender().sendMessage(finalComponent);
         }
 
         // Mentions
