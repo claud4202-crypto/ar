@@ -1,0 +1,37 @@
+name: RegionBlocks
+version: 1.0.0
+main: me.regionblocks.RegionBlocks
+api-version: '1.21'
+description: Система регионов через специальные блоки + общий /shop (приваты, ТНТ, вагонетки, сферы, киты).
+author: RegionBlocks
+softdepend: [ArisDonate]
+
+commands:
+  ps:
+    description: Управление участниками региона
+    usage: /ps add <регион> <ник> | /ps remove <регион> <ник>
+  rg:
+    description: Информация о регионах
+    usage: /rg i | /rg info
+  givearis:
+    description: Выдать блок Арис игроку
+    usage: /givearis <ник>
+    permission: regionblocks.givearis
+  shop:
+    description: Магазин — приваты, ТНТ, вагонетки, сферы/шары, киты
+    usage: /shop [privates|tnt|minecart|spheres|kits]
+  aris:
+    description: Проверить баланс Арисов
+    usage: /aris
+  a:
+    description: Админ-управление Арисами
+    usage: /a give|set|reset|giveall <ник> [кол]
+    permission: regionblocks.admin
+
+permissions:
+  regionblocks.givearis:
+    description: Выдача блока Арис
+    default: op
+  regionblocks.admin:
+    description: Полный доступ администратора (Арисы, магазин)
+    default: op
