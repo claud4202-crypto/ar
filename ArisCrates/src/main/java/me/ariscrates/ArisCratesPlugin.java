@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
     private HologramManager hologramManager;
     private DonateIntegration donateIntegration;
     private final Map<UUID, String> openCrateGui = new HashMap<>();
+    private final Map<UUID, Location> openCrateLoc = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -90,6 +92,7 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
         if (crate == null) { p.sendMessage(Msg.parse("&cКрейт &e" + crateId + " &cне найден.")); return; }
 
         openCrateGui.put(p.getUniqueId(), crate.id());
+        openCrateLoc.put(p.getUniqueId(), block.getLocation());
         openGui.open(p, crate);
         p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 0.7f, 1.0f);
     }
@@ -125,16 +128,19 @@ public class ArisCratesPlugin extends JavaPlugin implements Listener {
                     return;
                 }
                 crateManager.consumeKey(p, crate.id());
+                Location loc = openCrateLoc.remove(p.getUniqueId());
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
-                animationGui.play(p, crate);
+                animationGui.play(p, crate, loc);
             } else if (slot == 46) {
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
+                openCrateLoc.remove(p.getUniqueId());
                 previewGui.open(p, crate);
             } else if (slot == 50) {
                 p.closeInventory();
                 openCrateGui.remove(p.getUniqueId());
+                openCrateLoc.remove(p.getUniqueId());
             }
         }
     }

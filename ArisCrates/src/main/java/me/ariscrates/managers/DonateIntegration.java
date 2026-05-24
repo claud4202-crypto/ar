@@ -14,13 +14,8 @@ import java.lang.reflect.Method;
 public class DonateIntegration {
 
     private final ArisCratesPlugin plugin;
-    private Object donateManager;
-    private Method getPlayerRankMethod;
-    private Method setPlayerRankMethod;
-    private Method getRankMethod;
-    private Method weightMethod;
-    private Method gradientNameMethod;
     private boolean available;
+    private Plugin arisDonatePlugin;
 
     public DonateIntegration(ArisCratesPlugin plugin) {
         this.plugin = plugin;
@@ -28,106 +23,102 @@ public class DonateIntegration {
     }
 
     private void init() {
-        Plugin arisDonate = Bukkit.getPluginManager().getPlugin("ArisDonate");
-        if (arisDonate == null || !arisDonate.isEnabled()) {
+        arisDonatePlugin = Bukkit.getPluginManager().getPlugin("ArisDonate");
+        if (arisDonatePlugin == null || !arisDonatePlugin.isEnabled()) {
             plugin.getLogger().warning("ArisDonate не найден — донат-крейты не будут выдавать ранги.");
             available = false;
             return;
         }
-        try {
-            Method getDM = arisDonate.getClass().getMethod("getDonateManager");
-            donateManager = getDM.invoke(arisDonate);
-            getPlayerRankMethod = donateManager.getClass().getMethod("getPlayerRank", String.class);
-            setPlayerRankMethod = donateManager.getClass().getMethod("setPlayerRank", String.class, String.class);
-            getRankMethod = donateManager.getClass().getMethod("getRank", String.class);
-
-            Class<?> rankClass = getRankMethod.getReturnType();
-            weightMethod = rankClass.getMethod("weight");
-            gradientNameMethod = rankClass.getMethod("gradientName");
-
-            available = true;
-            plugin.getLogger().info("ArisDonate интеграция активна.");
-
-            // Re-apply permissions for online players
-            Method permService = arisDonate.getClass().getMethod("getPermissionService");
-            Object ps = permService.invoke(arisDonate);
-            Method reapply = ps.getClass().getMethod("applyAll", Player.class);
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                reapply.invoke(ps, p);
-            }
-        } catch (Exception e) {
-            plugin.getLogger().warning("Ошибка инициализации ArisDonate: " + e.getMessage());
-            available = false;
-        }
+        available = true;
+        plugin.getLogger().info("ArisDonate интеграция активна.");
     }
 
     public boolean isAvailable() { return available; }
 
-    /**
-     * Возвращает вес текущего доната игрока (0 если нет).
-     */
+    private Object getDonateManager() throws Exception {
+        Method m = arisDonatePlugin.getClass().getMethod("getDonateManager");
+        return m.invoke(arisDonatePlugin);
+    }
+
     public int getPlayerDonateWeight(String nick) {
         if (!available) return 0;
         try {
-            Object rank = getPlayerRankMethod.invoke(donateManager, nick);
+            Object dm = getDonateManager();
+            Method getPlayerRank = dm.getClass().getMethod("getPlayerRank", String.class);
+            Object rank = getPlayerRank.invoke(dm, nick);
             if (rank == null) return 0;
-            return (int) weightMethod.invoke(rank);
+            Method weight = rank.getClass().getMethod("weight");
+            return (int) weight.invoke(rank);
         } catch (Exception e) {
+            plugin.getLogger().warning("Ошибка getPlayerDonateWeight: " + e.getMessage());
             return 0;
         }
     }
 
-    /**
-     * Возвращает вес ранга по ID.
-     */
     public int getRankWeight(String rankId) {
         if (!available) return 0;
         try {
-            Object rank = getRankMethod.invoke(donateManager, rankId);
+            Object dm = getDonateManager();
+            Method getRank = dm.getClass().getMethod("getRank", String.class);
+            Object rank = getRank.invoke(dm, rankId);
             if (rank == null) return 0;
-            return (int) weightMethod.invoke(rank);
+            Method weight = rank.getClass().getMethod("weight");
+            return (int) weight.invoke(rank);
         } catch (Exception e) {
+            plugin.getLogger().warning("Ошибка getRankWeight: " + e.getMessage());
             return 0;
         }
     }
 
-    /**
-     * Возвращает gradient имя ранга для отображения.
-     */
     public String getRankGradientName(String rankId) {
         if (!available) return rankId;
         try {
-            Object rank = getRankMethod.invoke(donateManager, rankId);
+            Object dm = getDonateManager();
+            Method getRank = dm.getClass().getMethod("getRank", String.class);
+            Object rank = getRank.invoke(dm, rankId);
             if (rank == null) return rankId;
-            return (String) gradientNameMethod.invoke(rank);
+            Method gradientName = rank.getClass().getMethod("gradientName");
+            return (String) gradientName.invoke(rank);
         } catch (Exception e) {
             return rankId;
         }
     }
 
     /**
-     * Выдаёт донат-ранг, если он выше текущего.
-     * Возвращает true если ранг был выдан, false если у игрока уже есть выше.
+     * Выдаёт донат-ранг. Если у игрока уже выше — не понижает.
+     * Возвращает true если ранг был выдан.
      */
     public boolean giveRankIfHigher(Player player, String rankId) {
-        if (!available) return false;
+        if (!available) {
+            plugin.getLogger().warning("DonateIntegration не доступна для выдачи " + rankId);
+            return false;
+        }
         try {
             int currentWeight = getPlayerDonateWeight(player.getName());
             int newWeight = getRankWeight(rankId);
+
+            plugin.getLogger().info("[Крейт] Игрок " + player.getName()
+                    + " текущий вес=" + currentWeight + " новый=" + newWeight + " ранг=" + rankId);
+
             if (newWeight <= currentWeight) return false;
-            setPlayerRankMethod.invoke(donateManager, player.getName(), rankId);
+
+            Object dm = getDonateManager();
+            Method setPlayerRank = dm.getClass().getMethod("setPlayerRank", String.class, String.class);
+            setPlayerRank.invoke(dm, player.getName(), rankId);
 
             // Re-apply permissions
-            Plugin arisDonate = Bukkit.getPluginManager().getPlugin("ArisDonate");
-            if (arisDonate != null) {
-                Method permService = arisDonate.getClass().getMethod("getPermissionService");
-                Object ps = permService.invoke(arisDonate);
+            try {
+                Method permService = arisDonatePlugin.getClass().getMethod("getPermissionService");
+                Object ps = permService.invoke(arisDonatePlugin);
                 Method reapply = ps.getClass().getMethod("applyAll", Player.class);
                 reapply.invoke(ps, player);
-            }
+            } catch (Exception ignored) {}
+
+            plugin.getLogger().info("[Крейт] Донат " + rankId + " выдан игроку " + player.getName());
             return true;
         } catch (Exception e) {
-            plugin.getLogger().warning("Ошибка выдачи доната " + rankId + " игроку " + player.getName() + ": " + e.getMessage());
+            plugin.getLogger().warning("Ошибка выдачи доната " + rankId + " игроку " + player.getName() + ": " + e);
+            e.printStackTrace();
             return false;
         }
     }
