@@ -5,6 +5,7 @@ import me.regionblocks.models.Region;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -47,9 +48,24 @@ public class ProtectionListener implements Listener {
         if (deny(e.getPlayer(), e.getBlock().getLocation())) e.setCancelled(true);
     }
 
+    private static final java.util.Set<Material> ALLOWED_BLOCKS = java.util.Set.of(
+            Material.CRAFTING_TABLE,
+            Material.ANVIL,
+            Material.CHIPPED_ANVIL,
+            Material.DAMAGED_ANVIL,
+            Material.ENDER_CHEST,
+            Material.ENCHANTING_TABLE,
+            Material.STONECUTTER,
+            Material.GRINDSTONE,
+            Material.CARTOGRAPHY_TABLE,
+            Material.LOOM,
+            Material.SMITHING_TABLE
+    );
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e) {
         if (e.getClickedBlock() == null) return;
+        if (ALLOWED_BLOCKS.contains(e.getClickedBlock().getType())) return;
         if (deny(e.getPlayer(), e.getClickedBlock().getLocation())) e.setCancelled(true);
     }
 
