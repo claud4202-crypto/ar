@@ -1,0 +1,973 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║              ArisDonate — конфигурация                        ║
+# ║              для Minecraft 1.21.x (Paper)                    ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+# Версия конфига — не меняй вручную. Плагин делает резервную копию
+# и подменяет конфиг, если на диске лежит старая версия.
+config-version: 3
+
+default-home-limit: 1
+discord-url: "https://discord.gg/your-server"
+shop-links: []
+
+# ────────────────────────────────────────────────────────────────
+# 11 ДОНАТОВ — ArisPlus самый мощный.
+# Каждый ранг даёт:
+#   display-name   — текст-префикс (через scoreboard team)
+#   start-hex/end-hex — RGB градиент
+#   region-limit   — сколько регионов разрешено
+#   home-limit     — сколько /sethome'ов можно создать
+#   weight         — вес ранга (выше = мощнее, для tab)
+#   shulker        — иконка в /donate GUI
+#   description    — текст-описание (поддерживает &-коды + <grad:...>)
+#   commands       — список команд для отображения в lore
+#   gui-slot       — слот в /donate GUI (0..53)
+#   kit            — id кита (см. секцию kits)
+# ────────────────────────────────────────────────────────────────
+ranks:
+  spark:
+    display-name: "❖ Spark"
+    start-hex: "55FF55"
+    end-hex: "AAFF00"
+    region-limit: 5
+    home-limit: 3
+    weight: 10
+    shulker: LIME_SHULKER_BOX
+    gui-slot: 10
+    kit: spark
+    description:
+      - "&7Начальный донат для новичков."
+      - "&7Маленький, но приятный старт."
+    commands:
+      - "/sethome (×3)"
+      - "/back, /spawn, /warp"
+      - "/kit spark"
+
+  luna:
+    display-name: "❖ Luna"
+    start-hex: "D8D8FF"
+    end-hex: "8080FF"
+    region-limit: 15
+    home-limit: 6
+    weight: 20
+    shulker: LIGHT_BLUE_SHULKER_BOX
+    gui-slot: 11
+    kit: luna
+    description:
+      - "&7Светлый донат с базовой бронёй."
+      - "&7Появляются /hat, /skull, /near."
+    commands:
+      - "/sethome (×6)"
+      - "/hat, /skull, /near"
+      - "/kit luna"
+
+  stellar:
+    display-name: "❖ Stellar"
+    start-hex: "00FFFF"
+    end-hex: "00AAFF"
+    region-limit: 30
+    home-limit: 10
+    weight: 30
+    shulker: CYAN_SHULKER_BOX
+    gui-slot: 12
+    kit: stellar
+    description:
+      - "&7Серьёзный донат: /fly, /feed,"
+      - "&7зачарованный кит, эндер-пещера."
+    commands:
+      - "/sethome (×10), /renamehome"
+      - "/fly, /feed, /heal"
+      - "/kit stellar"
+
+  nova:
+    display-name: "❖ Nova"
+    start-hex: "FF55FF"
+    end-hex: "AA00AA"
+    region-limit: 50
+    home-limit: 25
+    weight: 40
+    shulker: MAGENTA_SHULKER_BOX
+    gui-slot: 13
+    kit: nova
+    description:
+      - "&7Премиум с алмазкой,"
+      - "&7эффектами и быстрым тп."
+    commands:
+      - "/sethome (×25), /seen, /near"
+      - "/feed, /heal, /fly, /speed"
+      - "/kit nova"
+
+  comet:
+    display-name: "❖ Comet"
+    start-hex: "FFFFFF"
+    end-hex: "ADD8E6"
+    region-limit: 60
+    home-limit: 35
+    weight: 50
+    shulker: WHITE_SHULKER_BOX
+    gui-slot: 14
+    kit: comet
+    description:
+      - "&7Стремительный донат:"
+      - "&7быстрая ходьба, прыжок и тп."
+    commands:
+      - "/sethome (×35), /jump, /top"
+      - "/back, /speed 5, /fly"
+      - "/kit comet"
+
+  galaxy:
+    display-name: "❖ Galaxy"
+    start-hex: "A020F0"
+    end-hex: "5F00FF"
+    region-limit: 70
+    home-limit: 50
+    weight: 60
+    shulker: PURPLE_SHULKER_BOX
+    gui-slot: 15
+    kit: galaxy
+    description:
+      - "&7Космический донат:"
+      - "&7эфирные крылья и тотемы в ките."
+    commands:
+      - "/sethome (×50), /repair"
+      - "/anvil, /craft, /loom"
+      - "/kit galaxy"
+
+  nebula:
+    display-name: "❖ Nebula"
+    start-hex: "FF69B4"
+    end-hex: "FF1493"
+    region-limit: 75
+    home-limit: 60
+    weight: 70
+    shulker: PINK_SHULKER_BOX
+    gui-slot: 16
+    kit: nebula
+    description:
+      - "&7Розовый туман — донат для эстетов."
+      - "&7Все блоки декора в шалкере."
+    commands:
+      - "/sethome (×60), /hat, /skull"
+      - "/nick, /unnick, /grindstone"
+      - "/kit nebula"
+
+  cosmos:
+    display-name: "❖ Cosmos"
+    start-hex: "1E90FF"
+    end-hex: "0000CD"
+    region-limit: 80
+    home-limit: 75
+    weight: 80
+    shulker: BLUE_SHULKER_BOX
+    gui-slot: 19
+    kit: cosmos
+    description:
+      - "&7Глубокий синий донат:"
+      - "&7доступ к /v (vanish) и /god."
+    commands:
+      - "/sethome (×75), /v, /god"
+      - "/feed, /heal, /cure"
+      - "/kit cosmos"
+
+  phoenix:
+    display-name: "❖ Phoenix"
+    start-hex: "FF4500"
+    end-hex: "FF0000"
+    region-limit: 85
+    home-limit: 85
+    weight: 90
+    shulker: RED_SHULKER_BOX
+    gui-slot: 20
+    kit: phoenix
+    description:
+      - "&7Огненный донат:"
+      - "&7Fire Aspect II и Огнестойкость."
+    commands:
+      - "/sethome (×85), /smite, /burn"
+      - "/fly, /speed 7, /god"
+      - "/kit phoenix"
+
+  aris:
+    display-name: "★ Aris"
+    start-hex: "FFD700"
+    end-hex: "FF8C00"
+    region-limit: 100
+    home-limit: 100
+    weight: 100
+    shulker: ORANGE_SHULKER_BOX
+    gui-slot: 22
+    kit: aris
+    description:
+      - "<grad:#FFD700:#FF8C00>★ ТОПОВЫЙ ДОНАТ ★</grad>"
+      - "&7Полный доступ ко всем плюшкам."
+      - "&7100 регионов и 100 /sethome'ов."
+    commands:
+      - "/sethome (×100)"
+      - "/fly, /speed 10, /god"
+      - "/inv, /enderchest"
+      - "/kit aris — Prot V незеритка + Sharp VI / Fire Aspect III"
+      - "/tpa, /tphere, /back, /top, /jump"
+      - "/v (vanish), /nick, /hat"
+
+  arisplus:
+    display-name: "✦ ArisPlus"
+    start-hex: "FF8C00"
+    end-hex: "FF1493"
+    region-limit: 100
+    home-limit: 100
+    weight: 110
+    shulker: YELLOW_SHULKER_BOX
+    gui-slot: 24
+    kit: arisplus
+    description:
+      - "<grad:#FF8C00:#FF1493>✦ САМЫЙ МОЩНЫЙ ДОНАТ ✦</grad>"
+      - "&7Всё, что есть у Aris, плюс расширенный"
+      - "&7шалкер со всеми материалами и тотемами."
+    commands:
+      - "/sethome (×100), /home, /delhome"
+      - "/fly, /speed 10, /god, /v"
+      - "/inv (просмотр чужих инвентарей)"
+      - "/enderchest (свой и чужой)"
+      - "/kit arisplus — Prot V незеритка + Sharp VI / Fire Aspect III"
+      - "/tpa, /tphere, /back, /top, /jump"
+      - "/skull, /hat, /repair, /craft"
+      - "/v (vanish), /nick"
+
+# ────────────────────────────────────────────────────────────────
+# КИТЫ — у каждого ранга свой кит. Можно расширить shulker-contents.
+# ────────────────────────────────────────────────────────────────
+kits:
+  spark:
+    display-name: "<grad:#55FF55:#AAFF00>Кит Spark</grad>"
+    cooldown: 86400
+    items:
+      - { material: STONE_SWORD, amount: 1 }
+      - { material: STONE_PICKAXE, amount: 1 }
+      - { material: STONE_AXE, amount: 1 }
+      - { material: STONE_SHOVEL, amount: 1 }
+      - { material: BREAD, amount: 16 }
+      - { material: TORCH, amount: 32 }
+      - name: "<grad:#55FF55:#AAFF00>Шалкер новичка</grad>"
+        material: LIME_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: OAK_LOG, amount: 32 }
+          - { material: OAK_PLANKS, amount: 32 }
+          - { material: COBBLESTONE, amount: 64 }
+          - { material: DIRT, amount: 32 }
+          - { material: GLASS, amount: 16 }
+          - { material: TORCH, amount: 32 }
+          - { material: BREAD, amount: 16 }
+          - { material: WATER_BUCKET, amount: 1 }
+          - { material: CRAFTING_TABLE, amount: 1 }
+          - { material: FURNACE, amount: 1 }
+          - { material: CHEST, amount: 1 }
+
+  luna:
+    display-name: "<grad:#D8D8FF:#8080FF>Кит Luna</grad>"
+    cooldown: 43200
+    items:
+      - { material: IRON_SWORD, amount: 1, enchantments: ["sharpness:2"] }
+      - { material: IRON_PICKAXE, amount: 1, enchantments: ["efficiency:2"] }
+      - { material: IRON_AXE, amount: 1, enchantments: ["efficiency:2"] }
+      - { material: IRON_HELMET, amount: 1, enchantments: ["protection:1"] }
+      - { material: IRON_CHESTPLATE, amount: 1, enchantments: ["protection:1"] }
+      - { material: IRON_LEGGINGS, amount: 1, enchantments: ["protection:1"] }
+      - { material: IRON_BOOTS, amount: 1, enchantments: ["protection:1", "feather_falling:1"] }
+      - { material: GOLDEN_APPLE, amount: 4 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - name: "<grad:#D8D8FF:#8080FF>Шалкер Luna</grad>"
+        material: LIGHT_BLUE_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: BIRCH_LOG, amount: 64 }
+          - { material: BIRCH_PLANKS, amount: 64 }
+          - { material: STONE, amount: 64 }
+          - { material: GLASS, amount: 32 }
+          - { material: TORCH, amount: 64 }
+          - { material: LADDER, amount: 32 }
+          - { material: COOKED_BEEF, amount: 32 }
+          - { material: GOLDEN_APPLE, amount: 4 }
+          - { material: BUCKET, amount: 2 }
+          - { material: ANVIL, amount: 1 }
+          - { material: CRAFTING_TABLE, amount: 1 }
+          - { material: FURNACE, amount: 2 }
+          - { material: CHEST, amount: 2 }
+
+  stellar:
+    display-name: "<grad:#00FFFF:#00AAFF>Кит Stellar</grad>"
+    cooldown: 28800
+    items:
+      - { material: DIAMOND_SWORD, amount: 1, enchantments: ["sharpness:3", "unbreaking:2"] }
+      - { material: DIAMOND_PICKAXE, amount: 1, enchantments: ["efficiency:3", "unbreaking:2", "fortune:1"] }
+      - { material: DIAMOND_AXE, amount: 1, enchantments: ["efficiency:3", "unbreaking:2"] }
+      - { material: DIAMOND_HELMET, amount: 1, enchantments: ["protection:2", "unbreaking:2"] }
+      - { material: DIAMOND_CHESTPLATE, amount: 1, enchantments: ["protection:2", "unbreaking:2"] }
+      - { material: DIAMOND_LEGGINGS, amount: 1, enchantments: ["protection:2", "unbreaking:2"] }
+      - { material: DIAMOND_BOOTS, amount: 1, enchantments: ["protection:2", "feather_falling:2", "unbreaking:2"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 2 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: GOLDEN_APPLE, amount: 16 }
+      - name: "<grad:#00FFFF:#00AAFF>Шалкер Stellar</grad>"
+        material: CYAN_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: SPRUCE_LOG, amount: 64 }
+          - { material: SPRUCE_PLANKS, amount: 64 }
+          - { material: STONE_BRICKS, amount: 64 }
+          - { material: GLASS, amount: 64 }
+          - { material: SEA_LANTERN, amount: 16 }
+          - { material: TORCH, amount: 64 }
+          - { material: ENDER_PEARL, amount: 8 }
+          - { material: ENDER_EYE, amount: 4 }
+          - { material: ANVIL, amount: 1 }
+          - { material: ENCHANTING_TABLE, amount: 1 }
+          - { material: GRINDSTONE, amount: 1 }
+          - { material: CARTOGRAPHY_TABLE, amount: 1 }
+          - { material: SMITHING_TABLE, amount: 1 }
+
+  nova:
+    display-name: "<grad:#FF55FF:#AA00AA>Кит Nova</grad>"
+    cooldown: 14400
+    items:
+      - { material: DIAMOND_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "fire_aspect:2", "mending:1"] }
+      - { material: DIAMOND_PICKAXE, amount: 1, enchantments: ["efficiency:4", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: DIAMOND_AXE, amount: 1, enchantments: ["efficiency:4", "unbreaking:3", "sharpness:5", "mending:1"] }
+      - { material: DIAMOND_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "respiration:3", "aqua_affinity:1"] }
+      - { material: DIAMOND_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: DIAMOND_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3"] }
+      - { material: DIAMOND_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "unbreaking:3", "depth_strider:3"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 8 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 2 }
+      - { material: ENDER_PEARL, amount: 16 }
+      - name: "<grad:#FF55FF:#AA00AA>Шалкер Nova</grad>"
+        material: MAGENTA_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: DARK_OAK_LOG, amount: 64 }
+          - { material: DARK_OAK_PLANKS, amount: 64 }
+          - { material: DEEPSLATE_BRICKS, amount: 64 }
+          - { material: PURPUR_BLOCK, amount: 32 }
+          - { material: GLOWSTONE, amount: 32 }
+          - { material: GLASS, amount: 64 }
+          - { material: TORCH, amount: 64 }
+          - { material: SHULKER_BOX, amount: 4 }
+          - { material: ENDER_CHEST, amount: 2 }
+          - { material: ENCHANTING_TABLE, amount: 1 }
+          - { material: TOTEM_OF_UNDYING, amount: 2 }
+          - { material: ENCHANTED_GOLDEN_APPLE, amount: 8 }
+
+  comet:
+    display-name: "<grad:#FFFFFF:#ADD8E6>Кит Comet</grad>"
+    cooldown: 14400
+    items:
+      - { material: NETHERITE_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "fire_aspect:2", "mending:1"] }
+      - { material: NETHERITE_PICKAXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_AXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3"] }
+      - { material: NETHERITE_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "respiration:3"] }
+      - { material: NETHERITE_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3"] }
+      - { material: NETHERITE_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "unbreaking:3", "soul_speed:3"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 12 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 3 }
+      - { material: ENDER_PEARL, amount: 32 }
+      - name: "<grad:#FFFFFF:#ADD8E6>Шалкер Comet</grad>"
+        material: WHITE_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: SNOW_BLOCK, amount: 64 }
+          - { material: ICE, amount: 64 }
+          - { material: PACKED_ICE, amount: 64 }
+          - { material: BLUE_ICE, amount: 16 }
+          - { material: OAK_LOG, amount: 64 }
+          - { material: OAK_PLANKS, amount: 64 }
+          - { material: GLASS, amount: 64 }
+          - { material: TORCH, amount: 64 }
+          - { material: SHULKER_BOX, amount: 4 }
+          - { material: ENDER_PEARL, amount: 16 }
+          - { material: ENDER_CHEST, amount: 2 }
+          - { material: BREWING_STAND, amount: 1 }
+
+  galaxy:
+    display-name: "<grad:#A020F0:#5F00FF>Кит Galaxy</grad>"
+    cooldown: 10800
+    items:
+      - { material: NETHERITE_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "fire_aspect:2", "looting:3", "mending:1"] }
+      - { material: NETHERITE_PICKAXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_AXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "sharpness:5", "mending:1"] }
+      - { material: NETHERITE_SHOVEL, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "respiration:3", "aqua_affinity:1", "mending:1"] }
+      - { material: NETHERITE_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "unbreaking:3", "depth_strider:3", "mending:1"] }
+      - { material: ELYTRA, amount: 1, enchantments: ["unbreaking:3", "mending:1"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 16 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 4 }
+      - { material: FIREWORK_ROCKET, amount: 64 }
+      - { sphere: bounce }
+      - name: "<grad:#A020F0:#5F00FF>Шалкер Galaxy</grad>"
+        material: PURPLE_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: END_STONE, amount: 64 }
+          - { material: PURPUR_BLOCK, amount: 64 }
+          - { material: OBSIDIAN, amount: 32 }
+          - { material: GLOWSTONE, amount: 32 }
+          - { material: GLASS, amount: 64 }
+          - { material: TORCH, amount: 64 }
+          - { material: SHULKER_BOX, amount: 6 }
+          - { material: ENDER_CHEST, amount: 4 }
+          - { material: ENDER_PEARL, amount: 32 }
+          - { material: BLAZE_ROD, amount: 16 }
+          - { material: ENDER_EYE, amount: 16 }
+          - { material: ELYTRA, amount: 1, enchantments: ["unbreaking:3", "mending:1"] }
+          - { material: FIREWORK_ROCKET, amount: 64 }
+
+  nebula:
+    display-name: "<grad:#FF69B4:#FF1493>Кит Nebula</grad>"
+    cooldown: 10800
+    items:
+      - { material: NETHERITE_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "fire_aspect:2", "looting:3", "mending:1"] }
+      - { material: NETHERITE_PICKAXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "respiration:3", "mending:1"] }
+      - { material: NETHERITE_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "unbreaking:3", "mending:1"] }
+      - { material: ELYTRA, amount: 1, enchantments: ["unbreaking:3", "mending:1"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 16 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 4 }
+      - { sphere: nebula }
+      - name: "<grad:#FF69B4:#FF1493>Декоративный шалкер</grad>"
+        material: PINK_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: PINK_WOOL, amount: 64 }
+          - { material: MAGENTA_WOOL, amount: 64 }
+          - { material: PURPLE_WOOL, amount: 64 }
+          - { material: PINK_CONCRETE, amount: 64 }
+          - { material: PINK_STAINED_GLASS, amount: 64 }
+          - { material: PURPUR_BLOCK, amount: 32 }
+          - { material: AMETHYST_BLOCK, amount: 16 }
+          - { material: GLOWSTONE, amount: 16 }
+          - { material: PINK_PETALS, amount: 32 }
+          - { material: ROSE_BUSH, amount: 16 }
+          - { material: PEONY, amount: 16 }
+          - { material: LILY_OF_THE_VALLEY, amount: 16 }
+
+  cosmos:
+    display-name: "<grad:#1E90FF:#0000CD>Кит Cosmos</grad>"
+    cooldown: 10800
+    items:
+      - { material: NETHERITE_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "looting:3", "mending:1"] }
+      - { material: NETHERITE_PICKAXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_AXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "sharpness:5", "mending:1"] }
+      - { material: NETHERITE_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "respiration:3", "aqua_affinity:1", "mending:1"] }
+      - { material: NETHERITE_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3", "mending:1"] }
+      - { material: NETHERITE_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "depth_strider:3", "unbreaking:3", "mending:1"] }
+      - { material: ELYTRA, amount: 1, enchantments: ["unbreaking:3", "mending:1"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 24 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 5 }
+      - { sphere: cosmos }
+      - name: "<grad:#1E90FF:#0000CD>Шалкер Cosmos</grad>"
+        material: BLUE_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: DEEPSLATE_BRICKS, amount: 64 }
+          - { material: POLISHED_DEEPSLATE, amount: 64 }
+          - { material: OBSIDIAN, amount: 32 }
+          - { material: SEA_LANTERN, amount: 32 }
+          - { material: PRISMARINE, amount: 32 }
+          - { material: GLASS, amount: 64 }
+          - { material: BLUE_STAINED_GLASS, amount: 32 }
+          - { material: TORCH, amount: 64 }
+          - { material: SHULKER_BOX, amount: 6 }
+          - { material: ENDER_CHEST, amount: 4 }
+          - { material: ENDER_PEARL, amount: 32 }
+          - { material: WATER_BUCKET, amount: 4 }
+          - { material: FIREWORK_ROCKET, amount: 64 }
+
+  phoenix:
+    display-name: "<grad:#FF4500:#FF0000>Кит Phoenix</grad>"
+    cooldown: 10800
+    items:
+      - { material: NETHERITE_SWORD, amount: 1, enchantments: ["sharpness:5", "unbreaking:3", "fire_aspect:3", "looting:3", "mending:1"] }
+      - { material: NETHERITE_PICKAXE, amount: 1, enchantments: ["efficiency:5", "unbreaking:3", "fortune:3", "mending:1"] }
+      - { material: NETHERITE_HELMET, amount: 1, enchantments: ["protection:4", "unbreaking:3", "fire_protection:4", "mending:1"] }
+      - { material: NETHERITE_CHESTPLATE, amount: 1, enchantments: ["protection:4", "unbreaking:3", "fire_protection:4", "mending:1"] }
+      - { material: NETHERITE_LEGGINGS, amount: 1, enchantments: ["protection:4", "unbreaking:3", "fire_protection:4", "mending:1"] }
+      - { material: NETHERITE_BOOTS, amount: 1, enchantments: ["protection:4", "feather_falling:4", "fire_protection:4", "soul_speed:3", "unbreaking:3", "mending:1"] }
+      - { material: ELYTRA, amount: 1, enchantments: ["unbreaking:3", "mending:1"] }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 24 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 6 }
+      - { material: FLINT_AND_STEEL, amount: 1, enchantments: ["unbreaking:3"] }
+      - { sphere: phoenix }
+      - name: "<grad:#FF4500:#FF0000>Огненный шалкер</grad>"
+        material: RED_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: NETHERRACK, amount: 64 }
+          - { material: NETHER_BRICKS, amount: 64 }
+          - { material: BLACKSTONE, amount: 64 }
+          - { material: BASALT, amount: 64 }
+          - { material: GLOWSTONE, amount: 32 }
+          - { material: MAGMA_BLOCK, amount: 16 }
+          - { material: SOUL_TORCH, amount: 32 }
+          - { material: TORCH, amount: 64 }
+          - { material: BLAZE_POWDER, amount: 32 }
+          - { material: BLAZE_ROD, amount: 16 }
+          - { material: FIRE_CHARGE, amount: 16 }
+          - { material: FIREWORK_ROCKET, amount: 64 }
+          - { material: ENDER_PEARL, amount: 32 }
+
+  # Aris — топовый, по требованию пользователя:
+  #   "з5 незер" = Protection V netherite
+  #   "острата 6 на мече и заговор огня 3" = Sharpness VI + Fire Aspect III
+  aris:
+    display-name: "<grad:#FFD700:#FF8C00>★ Кит Aris ★</grad>"
+    cooldown: 7200
+    items:
+      - name: "<grad:#FFD700:#FF8C00>★ Меч Ариса ★</grad>"
+        material: NETHERITE_SWORD
+        amount: 1
+        enchantments:
+          - "sharpness:6"
+          - "fire_aspect:3"
+          - "looting:5"
+          - "sweeping_edge:5"
+          - "unbreaking:5"
+          - "mending:1"
+        lore:
+          - "&7Лучший меч на сервере."
+          - "<grad:#FFD700:#FF8C00>Aris — топовый донат</grad>"
+      - name: "<grad:#FFD700:#FF8C00>Кирка Ариса</grad>"
+        material: NETHERITE_PICKAXE
+        amount: 1
+        enchantments: ["efficiency:6", "fortune:5", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Топор Ариса</grad>"
+        material: NETHERITE_AXE
+        amount: 1
+        enchantments: ["efficiency:6", "sharpness:6", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Лопата Ариса</grad>"
+        material: NETHERITE_SHOVEL
+        amount: 1
+        enchantments: ["efficiency:6", "fortune:5", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Шлем Ариса</grad>"
+        material: NETHERITE_HELMET
+        amount: 1
+        enchantments: ["protection:5", "respiration:3", "aqua_affinity:1", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Нагрудник Ариса</grad>"
+        material: NETHERITE_CHESTPLATE
+        amount: 1
+        enchantments: ["protection:5", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Поножи Ариса</grad>"
+        material: NETHERITE_LEGGINGS
+        amount: 1
+        enchantments: ["protection:5", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Сапоги Ариса</grad>"
+        material: NETHERITE_BOOTS
+        amount: 1
+        enchantments: ["protection:5", "feather_falling:4", "depth_strider:3", "soul_speed:3", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FFD700:#FF8C00>Эфирные крылья</grad>"
+        material: ELYTRA
+        amount: 1
+        enchantments: ["unbreaking:5", "mending:1"]
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 32 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 8 }
+      - { material: ENDER_PEARL, amount: 32 }
+      - { material: FIREWORK_ROCKET, amount: 64 }
+      - { sphere: phantom }
+      - name: "<grad:#FFD700:#FF8C00>★ Шалкер Ариса ★</grad>"
+        material: ORANGE_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: OAK_LOG, amount: 64 }
+          - { material: SPRUCE_LOG, amount: 64 }
+          - { material: BIRCH_LOG, amount: 64 }
+          - { material: GLASS, amount: 64 }
+          - { material: WHITE_STAINED_GLASS, amount: 64 }
+          - { material: OBSIDIAN, amount: 32 }
+          - { material: COBBLESTONE, amount: 64 }
+          - { material: STONE_BRICKS, amount: 64 }
+          - { material: DEEPSLATE_BRICKS, amount: 64 }
+          - { material: NETHERITE_BLOCK, amount: 8 }
+          - { material: DIAMOND_BLOCK, amount: 16 }
+          - { material: EMERALD_BLOCK, amount: 16 }
+          - { material: SHULKER_BOX, amount: 9 }
+          - { material: ENDER_CHEST, amount: 4 }
+          - { material: BEACON, amount: 2 }
+          - { material: TORCH, amount: 64 }
+          - { material: GLOWSTONE, amount: 32 }
+          - { material: ENDER_PEARL, amount: 32 }
+          - { material: TOTEM_OF_UNDYING, amount: 4 }
+
+  # ArisPlus — самый мощный, расширенная версия Aris.
+  arisplus:
+    display-name: "<grad:#FF8C00:#FF1493>✦ Кит ArisPlus ✦</grad>"
+    cooldown: 3600
+    items:
+      - name: "<grad:#FF8C00:#FF1493>✦ Меч ArisPlus ✦</grad>"
+        material: NETHERITE_SWORD
+        amount: 1
+        enchantments:
+          - "sharpness:6"
+          - "fire_aspect:3"
+          - "looting:5"
+          - "sweeping_edge:5"
+          - "knockback:5"
+          - "unbreaking:5"
+          - "mending:1"
+        lore:
+          - "<grad:#FF8C00:#FF1493>✦ САМЫЙ МОЩНЫЙ ✦</grad>"
+          - "&7Эта вещь буквально разрывает противников."
+      - name: "<grad:#FF8C00:#FF1493>✦ Кирка ArisPlus ✦</grad>"
+        material: NETHERITE_PICKAXE
+        amount: 1
+        enchantments: ["efficiency:6", "fortune:5", "silk_touch:1", "unbreaking:5", "mending:1"]
+        lore:
+          - "&7Шёлковое касание + Fortune V одновременно."
+      - name: "<grad:#FF8C00:#FF1493>Топор ArisPlus</grad>"
+        material: NETHERITE_AXE
+        amount: 1
+        enchantments: ["efficiency:6", "sharpness:6", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FF8C00:#FF1493>Лопата ArisPlus</grad>"
+        material: NETHERITE_SHOVEL
+        amount: 1
+        enchantments: ["efficiency:6", "fortune:5", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FF8C00:#FF1493>Шлем ArisPlus</grad>"
+        material: NETHERITE_HELMET
+        amount: 1
+        enchantments:
+          - "protection:5"
+          - "fire_protection:4"
+          - "blast_protection:4"
+          - "projectile_protection:4"
+          - "respiration:3"
+          - "aqua_affinity:1"
+          - "unbreaking:5"
+          - "mending:1"
+      - name: "<grad:#FF8C00:#FF1493>Нагрудник ArisPlus</grad>"
+        material: NETHERITE_CHESTPLATE
+        amount: 1
+        enchantments: ["protection:5", "blast_protection:4", "projectile_protection:4", "unbreaking:5", "mending:1", "thorns:3"]
+      - name: "<grad:#FF8C00:#FF1493>Поножи ArisPlus</grad>"
+        material: NETHERITE_LEGGINGS
+        amount: 1
+        enchantments: ["protection:5", "blast_protection:4", "projectile_protection:4", "unbreaking:5", "mending:1"]
+      - name: "<grad:#FF8C00:#FF1493>Сапоги ArisPlus</grad>"
+        material: NETHERITE_BOOTS
+        amount: 1
+        enchantments:
+          - "protection:5"
+          - "feather_falling:4"
+          - "depth_strider:3"
+          - "soul_speed:3"
+          - "unbreaking:5"
+          - "mending:1"
+      - name: "<grad:#FF8C00:#FF1493>Эфирные крылья +</grad>"
+        material: ELYTRA
+        amount: 1
+        enchantments: ["unbreaking:5", "mending:1"]
+      - name: "<grad:#FF8C00:#FF1493>Лук ArisPlus</grad>"
+        material: BOW
+        amount: 1
+        enchantments: ["power:5", "punch:2", "flame:1", "infinity:1", "unbreaking:5", "mending:1"]
+      - { material: ARROW, amount: 64 }
+      - { material: ENCHANTED_GOLDEN_APPLE, amount: 64 }
+      - { material: COOKED_BEEF, amount: 32 }
+      - { material: BREAD, amount: 16 }
+      - { material: CARROT, amount: 32 }
+      - { material: GOLDEN_CARROT, amount: 16 }
+      - { material: TOTEM_OF_UNDYING, amount: 16 }
+      - { material: ENDER_PEARL, amount: 64 }
+      - { material: FIREWORK_ROCKET, amount: 64 }
+      - { sphere: chaos }
+      - name: "<grad:#FF8C00:#FF1493>✦ Шалкер ArisPlus ✦</grad>"
+        material: YELLOW_SHULKER_BOX
+        amount: 1
+        shulker-contents:
+          - { material: OAK_LOG, amount: 64 }
+          - { material: SPRUCE_LOG, amount: 64 }
+          - { material: BIRCH_LOG, amount: 64 }
+          - { material: DARK_OAK_LOG, amount: 64 }
+          - { material: GLASS, amount: 64 }
+          - { material: WHITE_STAINED_GLASS, amount: 64 }
+          - { material: COBBLESTONE, amount: 64 }
+          - { material: STONE_BRICKS, amount: 64 }
+          - { material: NETHERITE_BLOCK, amount: 16 }
+          - { material: DIAMOND_BLOCK, amount: 32 }
+          - { material: EMERALD_BLOCK, amount: 32 }
+          - { material: GOLD_BLOCK, amount: 32 }
+          - { material: SHULKER_BOX, amount: 16 }
+          - { material: ENDER_CHEST, amount: 8 }
+          - { material: BEACON, amount: 4 }
+          - { material: NETHER_STAR, amount: 4 }
+          - { material: TORCH, amount: 64 }
+          - { material: GLOWSTONE, amount: 64 }
+          - { material: ENDER_PEARL, amount: 64 }
+          - { material: TOTEM_OF_UNDYING, amount: 8 }
+          - { material: OBSIDIAN, amount: 64 }
+          - { material: WATER_BUCKET, amount: 4 }
+          - { material: LAVA_BUCKET, amount: 4 }
+          - { material: ANVIL, amount: 4 }
+          - { material: ENCHANTING_TABLE, amount: 1 }
+          - { material: SMITHING_TABLE, amount: 1 }
+          - { material: CRAFTING_TABLE, amount: 4 }
+
+# ────────────────────────────────────────────────────────────────
+# СФЕРЫ / ШАРИКИ — носятся в шлеме или второй руке.
+# Каждые 2 сек SphereManager навешивает potion-эффекты пока сфера экипирована.
+# Балансированы: сильные сферы имеют дебаф; слабые без минусов и дешевле.
+# Уровни 1-2 в основном; уровень 1 в коде = amplifier 0 (т.е. effect I).
+# Слоты: HEAD | OFFHAND | ANY
+# Цены — Aris-coins. Цена 0 = выдаётся только в составе кита, не продаётся.
+# ────────────────────────────────────────────────────────────────
+spheres:
+  bounce:
+    display-name: "Сфера Прыжка"
+    material: SLIME_BALL
+    start-hex: "9AFF9A"
+    end-hex: "00C000"
+    slot: ANY
+    price: 600
+    buffs: ["jump_boost:2"]
+    debuffs: []
+    lore:
+      - "&7Высоко прыгай, без минусов."
+
+  ember:
+    display-name: "Сфера Огня"
+    material: BLAZE_POWDER
+    start-hex: "FFA500"
+    end-hex: "FF4500"
+    slot: HEAD
+    price: 800
+    buffs: ["fire_resistance:1"]
+    debuffs: []
+    lore:
+      - "&7Иммунитет к огню и лаве."
+      - "&8Слот: только шлем."
+
+  owl:
+    display-name: "Сфера Ночи"
+    material: ENDER_EYE
+    start-hex: "8A2BE2"
+    end-hex: "4B0082"
+    slot: OFFHAND
+    price: 500
+    buffs: ["night_vision:1"]
+    debuffs: []
+    lore:
+      - "&7Видишь в темноте, без минусов."
+      - "&8Слот: только off-hand."
+
+  tide:
+    display-name: "Сфера Прилива"
+    material: HEART_OF_THE_SEA
+    start-hex: "00BFFF"
+    end-hex: "1E90FF"
+    slot: ANY
+    price: 900
+    buffs: ["water_breathing:1", "conduit_power:1"]
+    debuffs: []
+    lore:
+      - "&7Дыхание + кондуит-сила."
+      - "&7Идеально для подводных рейдов."
+
+  force:
+    display-name: "Сфера Силы"
+    material: MAGMA_CREAM
+    start-hex: "FF6347"
+    end-hex: "B22222"
+    slot: ANY
+    price: 1200
+    buffs: ["strength:1"]
+    debuffs: ["slowness:1"]
+    lore:
+      - "&7+3 урона, &c−15% скорости движения."
+      - "&8Баф/дебаф: для атакующих билдов."
+
+  bulwark:
+    display-name: "Сфера Защиты"
+    material: TURTLE_SCUTE
+    start-hex: "9ACD32"
+    end-hex: "228B22"
+    slot: HEAD
+    price: 1400
+    buffs: ["resistance:1"]
+    debuffs: ["mining_fatigue:1"]
+    lore:
+      - "&7−20% входящего урона."
+      - "&c−10% скорость атаки/копания."
+
+  gale:
+    display-name: "Сфера Ветра"
+    material: GHAST_TEAR
+    start-hex: "E0FFFF"
+    end-hex: "87CEEB"
+    slot: OFFHAND
+    price: 1100
+    buffs: ["speed:2"]
+    debuffs: ["weakness:1"]
+    lore:
+      - "&7+40% скорости движения."
+      - "&c−4 урона ближнего боя."
+
+  vitality:
+    display-name: "Сфера Жизни"
+    material: APPLE
+    start-hex: "FF69B4"
+    end-hex: "FF1493"
+    slot: ANY
+    price: 1500
+    buffs: ["regeneration:1"]
+    debuffs: ["hunger:1"]
+    lore:
+      - "&7Регенерация HP, &cпища тратится быстрее."
+
+  # Сферы из китов (price 0 — не продаются в магазине):
+  nebula:
+    display-name: "Сфера Туманности"
+    material: AMETHYST_SHARD
+    start-hex: "FF69B4"
+    end-hex: "FF1493"
+    slot: ANY
+    price: 0
+    buffs: ["speed:1", "jump_boost:1"]
+    debuffs: []
+    lore:
+      - "&7Лёгкое ускорение и прыжок."
+      - "&8Получается в ките &eNebula&8."
+
+  cosmos:
+    display-name: "Сфера Звёзд"
+    material: PRISMARINE_CRYSTALS
+    start-hex: "1E90FF"
+    end-hex: "0000CD"
+    slot: ANY
+    price: 0
+    buffs: ["slow_falling:1", "speed:1"]
+    debuffs: []
+    lore:
+      - "&7Замедленное падение и +20% скорости."
+      - "&8Получается в ките &eCosmos&8."
+
+  phoenix:
+    display-name: "Сфера Феникса"
+    material: FIRE_CHARGE
+    start-hex: "FF4500"
+    end-hex: "FF0000"
+    slot: ANY
+    price: 0
+    buffs: ["fire_resistance:1", "strength:1"]
+    debuffs: ["hunger:1"]
+    lore:
+      - "&7Иммунитет к огню + сила."
+      - "&cБолее быстрый голод."
+      - "&8Получается в ките &ePhoenix&8."
+
+  phantom:
+    display-name: "★ Сфера Призрака ★"
+    material: PHANTOM_MEMBRANE
+    start-hex: "FFD700"
+    end-hex: "FF8C00"
+    slot: ANY
+    price: 0
+    buffs: ["invisibility:1"]
+    debuffs: ["hunger:2"]
+    lore:
+      - "&7Невидимость пока носишь."
+      - "&cГолод тратится вдвое быстрее."
+      - "&8Получается в ките &6Aris&8."
+
+  chaos:
+    display-name: "✦ Сфера Хаоса ✦"
+    material: NETHER_STAR
+    start-hex: "FF8C00"
+    end-hex: "FF1493"
+    slot: ANY
+    price: 0
+    buffs: ["strength:2", "speed:2", "regeneration:1"]
+    debuffs: ["wither:1"]
+    lore:
+      - "&7Сила II + Скорость II + Регенерация."
+      - "&cВитер I (−1HP/сек), пока носишь."
+      - "&7Регенерация компенсирует урон."
+      - "&8Получается в ките &dArisPlus&8."
+
+# ────────────────────────────────────────────────────────────────
+texts:
+  motd:
+    - "<grad:#FFD700:#FF8C00>══════════ Добро пожаловать! ══════════</grad>"
+    - "&7Сервер &eAris &7— Minecraft 1.21.x"
+    - "&7Команды: &e/help-aris &7для полного списка."
+    - "&7Купить донат: &6/donate"
+  rules:
+    - "<grad:#FF5555:#FFAA00>══ Правила сервера ══</grad>"
+    - "&71. Не читерим, не флудим, не оскорбляем."
+    - "&72. Гриф запрещён."
+    - "&73. Реклама = бан."
+    - "&74. Уважайте администрацию."
+    - "&75. Полный устав: /motd, /rules"
+
+# ────────────────────────────────────────────────────────────────
+# Стаф-ранги (Helper..Owner). Игроки без стафа и доната показываются как «Игрок».
+# Ставится командой /arisstaff set <ник> <id-ранга>.
+# Можно перекрашивать / переименовывать здесь; /arisstaff reload подхватит.
+staff-ranks:
+  helper:   { display-name: "Helper",   start-hex: "55FFFF", end-hex: "55AADD", weight: 100 }
+  dhelper:  { display-name: "D.Helper", start-hex: "55FFFF", end-hex: "55AAFF", weight: 110 }
+  mlmoder:  { display-name: "ML.Moder", start-hex: "55FF55", end-hex: "AAFF55", weight: 120 }
+  moder:    { display-name: "Moder",    start-hex: "55FF55", end-hex: "00AA00", weight: 130 }
+  dmoder:   { display-name: "D.Moder",  start-hex: "00FF77", end-hex: "00AA77", weight: 140 }
+  sponsor:  { display-name: "Sponsor",  start-hex: "FFD700", end-hex: "FFAA00", weight: 150 }
+  mladmin:  { display-name: "ML.Admin", start-hex: "FFAA00", end-hex: "FF7700", weight: 160 }
+  admin:    { display-name: "Admin",    start-hex: "FF5555", end-hex: "AA0000", weight: 170 }
+  dadmin:   { display-name: "D.Admin",  start-hex: "FF5555", end-hex: "FF1111", weight: 180 }
+  gladmin:  { display-name: "GL.Admin", start-hex: "FF55FF", end-hex: "AA00AA", weight: 190 }
+  curator:  { display-name: "Curator",  start-hex: "FF55FF", end-hex: "FFAAFF", weight: 200 }
+  owner:    { display-name: "Owner",    start-hex: "FFD700", end-hex: "FF3300", weight: 210 }
+
+# ────────────────────────────────────────────────────────────────
+# TAB-лист (верхняя/нижняя строки во время Tab)
+tab:
+  enabled: true
+  server-name: "ArisWorld"
+  motto: "Гриферское выживание"
+  # фейк-буст онлайна. 0/0 = выключен, показывается реальное число
+  fake-online-min: 0
+  fake-online-max: 0
+  # частота обновления, в тиках (20 = 1 секунда)
+  refresh-ticks: 60

@@ -1,0 +1,480 @@
+name: ArisDonate
+version: ${project.version}
+main: me.arisdonate.ArisDonatePlugin
+api-version: '1.21'
+description: Кастомная донат-система с GUI, /home, /warp, /tpa, /kit, /msg и 150+ командами для Minecraft 1.21.x
+author: Aris
+authors: [Aris]
+
+commands:
+  donate:
+    description: Открыть GUI магазина донатов
+    aliases: [don]
+  arisdonate:
+    description: Админ-управление донатами (give/set/remove/list/reload)
+    aliases: [adonate, ad]
+    usage: /arisdonate <give|set|remove|list|reload> [ник] [донат]
+    permission: arisdonate.admin
+  arisstaff:
+    description: Админ-управление стаф-рангами (set/remove/list/reload)
+    aliases: [astaff, staff]
+    usage: /arisstaff <set|remove|list|reload> [ник] [ранг]
+    permission: arisdonate.admin
+
+  sethome:
+    description: Создать домик
+    usage: /sethome [имя]
+  home:
+    description: Телепорт к домику
+    usage: /home [имя]
+  delhome:
+    description: Удалить домик
+    usage: /delhome <имя>
+  renamehome:
+    description: Переименовать домик
+    usage: /renamehome <старое> <новое>
+  homes:
+    description: Список домиков
+
+  setwarp:
+    description: Создать варп
+    permission: arisdonate.setwarp
+    permission-default: op
+  warp:
+    description: Телепорт к варпу
+  delwarp:
+    description: Удалить варп
+    permission: arisdonate.delwarp
+    permission-default: op
+  warps:
+    description: Список варпов
+
+  spawn:
+    description: Телепорт на спавн
+  setspawn:
+    description: Установить точку спавна (только админ)
+    permission: arisdonate.setspawn
+    permission-default: op
+
+  tp:
+    description: Телепорт к игроку / координатам
+    aliases: [teleport]
+    permission: arisdonate.tp
+    permission-default: op
+  tphere:
+    description: Телепортировать игрока к себе
+    aliases: [s, summon]
+    permission: arisdonate.tphere
+    permission-default: op
+  tpa:
+    description: Запрос на телепорт к игроку
+    aliases: [tpask]
+  tpahere:
+    description: Запрос игроку телепортироваться к себе
+  tpaccept:
+    description: Принять запрос
+    aliases: [tpyes, tpok]
+  tpadeny:
+    description: Отклонить запрос
+    aliases: [tpno, tpdeny]
+  tpcancel:
+    description: Информация о запросе
+  tppos:
+    description: Телепорт по координатам
+    permission: arisdonate.tppos
+    permission-default: op
+  tpall:
+    description: Телепортировать всех к себе
+    permission: arisdonate.tpall
+    permission-default: op
+  back:
+    description: Возврат к предыдущей точке
+    permission: arisdonate.back
+
+  msg:
+    description: Личное сообщение
+    aliases: [m]
+  tell:
+    description: Личное сообщение
+    aliases: [t]
+  w:
+    description: Личное сообщение (whisper)
+  pm:
+    description: Личное сообщение
+  r:
+    description: Ответить на последнее сообщение
+  reply:
+    description: Ответить на последнее сообщение
+  socialspy:
+    description: Включить/выключить просмотр чужих ЛС
+    permission: arisdonate.socialspy
+    permission-default: op
+  me:
+    description: Действие от 3-го лица
+  broadcast:
+    description: Глобальное объявление
+    aliases: [bc]
+    permission: arisdonate.broadcast
+    permission-default: op
+  afk:
+    description: Переключить AFK
+
+  vanish:
+    description: Невидимость
+    aliases: [v]
+    permission: arisdonate.vanish
+    permission-default: op
+  gm:
+    description: Режим игры
+    permission: arisdonate.gamemode
+    permission-default: op
+  gmc:
+    description: Креатив
+    permission: arisdonate.gamemode
+    permission-default: op
+  gms:
+    description: Выживание
+    permission: arisdonate.gamemode
+    permission-default: op
+  gma:
+    description: Приключение
+    permission: arisdonate.gamemode
+    permission-default: op
+  gmsp:
+    description: Наблюдатель
+    permission: arisdonate.gamemode
+    permission-default: op
+  fly:
+    description: Режим полёта
+    permission: arisdonate.fly
+    permission-default: op
+  flyspeed:
+    description: Скорость полёта
+    permission: arisdonate.speed
+    permission-default: op
+  walkspeed:
+    description: Скорость ходьбы
+    permission: arisdonate.speed
+    permission-default: op
+  speed:
+    description: Скорость
+    permission: arisdonate.speed
+    permission-default: op
+
+  ban:
+    description: Бан игрока
+    permission: arisdonate.ban
+    permission-default: op
+  tempban:
+    description: Временный бан
+    permission: arisdonate.ban
+    permission-default: op
+  unban:
+    description: Снять бан
+    permission: arisdonate.ban
+    permission-default: op
+    aliases: [pardon]
+  kick:
+    description: Кикнуть игрока
+    permission: arisdonate.kick
+    permission-default: op
+  mute:
+    description: Заглушить игрока
+    permission: arisdonate.mute
+    permission-default: op
+  tempmute:
+    description: Временный мьют
+    permission: arisdonate.mute
+    permission-default: op
+  unmute:
+    description: Снять мьют
+    permission: arisdonate.mute
+    permission-default: op
+  freeze:
+    description: Заморозить игрока
+    permission: arisdonate.freeze
+    permission-default: op
+  jail:
+    description: Отправить в джейл
+    permission: arisdonate.jail
+    permission-default: op
+  unjail:
+    description: Выпустить из джейла
+    permission: arisdonate.jail
+    permission-default: op
+  setjail:
+    description: Точка джейла
+    permission: arisdonate.setjail
+    permission-default: op
+  warn:
+    description: Предупреждение
+    permission: arisdonate.warn
+    permission-default: op
+
+  inv:
+    description: Просмотр инвентаря (alias /invsee)
+    permission: arisdonate.invsee
+    permission-default: op
+  invsee:
+    description: Просмотр инвентаря игрока
+    permission: arisdonate.invsee
+    permission-default: op
+  ec:
+    description: Эндер-сундук
+    permission: arisdonate.enderchest
+    permission-default: true
+  enderchest:
+    description: Эндер-сундук
+    permission: arisdonate.enderchest
+    permission-default: true
+  clearinv:
+    description: Очистить инвентарь
+    aliases: [ci]
+    permission: arisdonate.clearinv
+    permission-default: op
+
+  heal:
+    description: Исцелить
+    permission: arisdonate.heal
+    permission-default: op
+  feed:
+    description: Накормить
+    permission: arisdonate.feed
+    permission-default: op
+  god:
+    description: Режим бога
+    permission: arisdonate.god
+    permission-default: op
+  cure:
+    description: Снять эффекты
+    permission: arisdonate.cure
+    permission-default: op
+  effect:
+    description: Дать эффект
+    permission: arisdonate.effect
+    permission-default: op
+
+  time:
+    description: Установить время
+    permission: arisdonate.time
+    permission-default: op
+  day:
+    description: Установить день
+    permission: arisdonate.time
+    permission-default: op
+  night:
+    description: Установить ночь
+    permission: arisdonate.time
+    permission-default: op
+  weather:
+    description: Установить погоду
+    permission: arisdonate.weather
+    permission-default: op
+  sun:
+    description: Ясно
+    permission: arisdonate.weather
+    permission-default: op
+  rain:
+    description: Дождь
+    permission: arisdonate.weather
+    permission-default: op
+  thunder:
+    description: Гроза
+    permission: arisdonate.weather
+    permission-default: op
+  worldtp:
+    description: Телепорт в мир
+    aliases: [worldteleport]
+    permission: arisdonate.worldtp
+    permission-default: op
+
+  seen:
+    description: Когда игрок был в сети
+  near:
+    description: Кто рядом
+  playerlist:
+    description: Список онлайн игроков
+    aliases: [online]
+  tps:
+    description: TPS сервера
+  ping:
+    description: Пинг
+  whois:
+    description: Информация об игроке
+
+  top:
+    description: Телепорт наверх
+    permission: arisdonate.top
+    permission-default: op
+  jump:
+    description: Прыжок туда, куда смотрите
+    aliases: [j]
+    permission: arisdonate.jump
+    permission-default: op
+  repair:
+    description: Починить предмет в руке (all - все)
+    aliases: [fix]
+    permission: arisdonate.repair
+    permission-default: op
+  craft:
+    description: Открыть верстак
+  workbench:
+    description: Открыть верстак
+    aliases: [wb]
+  anvil:
+    description: Открыть наковальню
+  grindstone:
+    description: Открыть точильный станок
+  loom:
+    description: Открыть ткацкий станок
+  smithing:
+    description: Открыть кузнечный стол
+  cartography:
+    description: Открыть стол картографа
+
+  give:
+    description: Выдать предмет
+    permission: arisdonate.give
+    permission-default: op
+  i:
+    description: Выдать себе предмет
+    aliases: [item]
+    permission: arisdonate.item
+    permission-default: op
+  more:
+    description: Стак в руке × макс
+    permission: arisdonate.more
+    permission-default: op
+  skull:
+    description: Голова игрока
+  hat:
+    description: Надеть предмет на голову
+    permission: arisdonate.hat
+    permission-default: op
+  smite:
+    description: Молния
+    permission: arisdonate.smite
+    permission-default: op
+  burn:
+    description: Поджечь игрока
+    permission: arisdonate.burn
+    permission-default: op
+  extinguish:
+    description: Потушить
+    aliases: [ext]
+  lightning:
+    description: Молния
+    permission: arisdonate.smite
+    permission-default: op
+
+  clearchat:
+    description: Очистить чат
+    aliases: [clear]
+    permission: arisdonate.clearchat
+    permission-default: op
+  nick:
+    description: Сменить отображаемый ник
+    permission: arisdonate.nick
+    permission-default: op
+  unnick:
+    description: Сбросить ник
+  realname:
+    description: Найти настоящий ник
+  condense:
+    description: Сжать ресурсы в блоки
+  sudo:
+    description: Выполнить от имени игрока
+    permission: arisdonate.sudo
+    permission-default: op
+  commandspy:
+    description: Просмотр чужих команд
+    permission: arisdonate.commandspy
+    permission-default: op
+
+  kit:
+    description: Получить кит
+    usage: /kit [id] | /kit give <ник> <кит>
+  kits:
+    description: Список китов
+
+  check:
+    description: Информация об игроке (для стаффа)
+    permission: arisdonate.check
+  c:
+    description: Очистить чат (алиас /clearchat)
+    permission: arisdonate.clearchat
+  sphere:
+    description: Магазин/команды сфер
+    usage: /sphere shop|list|give|coins|bal
+  spheres:
+    description: Магазин сфер (alias /sphere shop)
+  rules:
+    description: Правила сервера
+  motd:
+    description: MOTD сервера
+  help-aris:
+    description: Полная справка ArisDonate
+  adreload:
+    description: Перечитать конфигурацию
+    permission: arisdonate.admin
+
+permissions:
+  arisdonate.admin:
+    description: Полный доступ
+    default: op
+    children:
+      arisdonate.*: true
+  arisdonate.*:
+    description: Все права плагина
+    default: op
+    children:
+      arisdonate.tp: true
+      arisdonate.tphere: true
+      arisdonate.tppos: true
+      arisdonate.tpall: true
+      arisdonate.back: true
+      arisdonate.setwarp: true
+      arisdonate.delwarp: true
+      arisdonate.setspawn: true
+      arisdonate.broadcast: true
+      arisdonate.socialspy: true
+      arisdonate.vanish: true
+      arisdonate.vanish.see: true
+      arisdonate.gamemode: true
+      arisdonate.fly: true
+      arisdonate.speed: true
+      arisdonate.ban: true
+      arisdonate.kick: true
+      arisdonate.mute: true
+      arisdonate.freeze: true
+      arisdonate.jail: true
+      arisdonate.setjail: true
+      arisdonate.warn: true
+      arisdonate.invsee: true
+      arisdonate.enderchest: true
+      arisdonate.enderchest.others: true
+      arisdonate.clearinv: true
+      arisdonate.heal: true
+      arisdonate.feed: true
+      arisdonate.god: true
+      arisdonate.cure: true
+      arisdonate.effect: true
+      arisdonate.time: true
+      arisdonate.weather: true
+      arisdonate.worldtp: true
+      arisdonate.top: true
+      arisdonate.jump: true
+      arisdonate.repair: true
+      arisdonate.give: true
+      arisdonate.item: true
+      arisdonate.more: true
+      arisdonate.hat: true
+      arisdonate.smite: true
+      arisdonate.burn: true
+      arisdonate.clearchat: true
+      arisdonate.nick: true
+      arisdonate.sudo: true
+      arisdonate.commandspy: true
+      arisdonate.kit.*: true
+      arisdonate.check: true
+      arisdonate.sphere.admin: true
